@@ -1,0 +1,313 @@
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <div style="text-align: start">
+    <a href="index3.html" class="brand-link">
+      <img
+        src="assets/auggit_leaf.png"
+        alt="AdminLTE Logo"
+        class="brand-image img-circle elevation-3"
+        style="opacity: 0.8"
+      />
+      <span class="brand-text font-weight-light"
+        ><img
+          src="assets/logo.png"
+          alt="AdminLTE Logo"
+          class="brand-image"
+          style="opacity: 1; float: inherit"
+      /></span>
+    </a>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar user (optional) -->
+    <!-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="assets/logo.png" class="img-circle elevation-2" alt="User Image">
+        </div>
+        
+      </div> -->
+
+    <!-- SidebarSearch Form -->
+    <!-- <div class="form-inline">
+        <div class="input-group" data-widget="sidebar-search">
+          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-sidebar">
+              <i class="fas fa-search fa-fw"></i>
+            </button>
+          </div>
+        </div>
+      </div> -->
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul
+        class="nav nav-pills nav-sidebar flex-column"
+        data-widget="treeview"
+        role="menu"
+        data-accordion="false"
+      >
+        <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              Dashboard
+              <i class="right fas fa-angle-right"></i>
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-circle"></i>
+            <p>
+              Master
+              <i class="right fas fa-angle-right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>
+                  Account Master
+                  <i class="right fas fa-angle-right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a routerLink="ledgerlist" class="nav-link">
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>Ledger</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="vendorlist" class="nav-link">
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>Vendor</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="customerlist" class="nav-link">
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>Customer</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="ledgergroup" class="nav-link">
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>Ledger Group</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>
+                  Inventory Master
+                  <i class="right fas fa-angle-right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a routerLink="stockitem" class="nav-link">
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>Stock Item</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="stockitemgroup" class="nav-link">
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>Stock Group</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="stockitemcategory" class="nav-link">
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>Stock Category</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="uom" class="nav-link">
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>uom</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>
+                  Other Master
+                  <i class="right fas fa-angle-right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a routerLink="country" class="nav-link">
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>Country Master</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="state" class="nav-link">
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>State Master</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-book"></i>
+            <p>
+              Purchase Process
+              <i class="right fas fa-angle-right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a routerLink="polist" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>PO</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="poservicelist" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>SERVICE PO</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="grnlist" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>GRN</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="servicegrnlist" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>SERVICE GRN</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-chart-pie"></i>
+            <p>
+              Sales & Distribution
+              <i class="right fas fa-angle-right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a routerLink="solist" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>SO</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="soservicelist" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>SERVICE SO</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="saleslist" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>SALES</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="servicesaleslist" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>SERVICE SALES</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                 Vouchers
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a routerLink="receiptbank" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>BANK RECEIPT</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a routerLink="receiptcash" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>CASH RECEIPT</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a routerLink="paymentbank" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>BANK PAYMENT</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a routerLink="paymentcash" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>CASH PAYMENT</p>
+                </a>
+              </li>
+              
+            </ul>
+          </li>        
+          <li class="nav-item">
+            <a routerLink="trialbalance" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                TRIAL BALANCE
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            
+          </li>
+          <li class="nav-item">
+            <a routerLink="cr" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                CREDIT NOTE
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            
+          </li>
+          <li class="nav-item">
+            <a routerLink="dr" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                DEBIT NOTE
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            
+          </li> -->
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>

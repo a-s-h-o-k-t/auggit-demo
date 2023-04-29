@@ -1,0 +1,167 @@
+<div class="content-wrapper">
+    <div class="p-2">
+      <div class="card"> 
+        <div class="card-header">       
+          <div class="row">
+            <div class="col-12 col-sm-6 col-md-8 col-lg-8 col-xl-9 col-xxl-10">
+                <div class="header-title">Update Ledger Details</div>      
+            </div>  
+            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xxl-2">                
+              <div style="text-align: right;">
+                <button type="button" class="btn btn-labeled btn-info btn-sm" (click)="gotoNew()">
+                  <span class="btn-label"><i class="fa fa-plus-square" style="margin-right: 5px;"></i></span>Add Ledger
+                </button>              
+              </div>        
+            </div>
+          </div>
+        </div>
+        <div class="card-body">   
+            <form [formGroup]="ledgerForm">    
+                <div class="row">
+                  <div class="col-12 col-sm-12 col-md-7 col-lg-8 col-xl-4 col-xxl-4">
+                       <div class="mb-0">                                      
+                          <mat-form-field appearance="outline"  style="width: 100%;"> 
+                            <mat-label>Ledger Name</mat-label>
+                            <input type="text" matInput formControlName="cledgerName" [(ngModel)] = "ledgerName" autocomplete="off">
+                          </mat-form-field>
+                        </div>  
+                        <div class="mb-0">                                      
+                              <mat-form-field class="example-full-width" appearance="outline" style="width: 100%; margin-top: 6px !important;">                       
+                                <mat-label>Ledger Group Under</mat-label>
+                                  <input type="text" #eprod
+                                       placeholder="Pick one"
+                                       aria-label="Number"
+                                       [(ngModel)]="ledgerUnderName"
+                                       formControlName="cledgerUnder"
+                                       matInput                               
+                                       [formControl]="parentTextBox"
+                                       [matAutocomplete]="auto" >                     
+                                       <!-- (keyup.enter)="onProdKeydown($event,i)"> -->
+                                       <mat-autocomplete #auto="matAutocomplete">
+                                        <mat-option *ngFor="let r of filteredParent | async" [value]="r.groupname" (onSelectionChange)="parentChanged($event,r)">
+                                          <!-- <img alt="" class="example-option-img" [src]="r.itemname" height="25"> -->
+                                          <span>{{r.groupname}}</span> |
+                                          <small>#{{r.groupcode}}</small>
+                                        </mat-option>
+                                      </mat-autocomplete>
+                                </mat-form-field>              
+                        </div>                                    
+                        <div class="mb-0">
+                            <mat-form-field appearance="outline"  style="width: 100%;"> 
+                                <mat-label>Country</mat-label>                                                                  
+                            <mat-select [(ngModel)]="country" formControlName="ccountry">
+                              <mat-option *ngFor="let val of countryData" [value]="val.countryname" [title]="val.countryname" (onSelectionChange)="countrychange($event,val)">
+                                {{val.countryname}}
+                              </mat-option>
+                            </mat-select>         
+                            </mat-form-field>                                 
+                        </div> 
+                        <div class="mb-0">      
+                            <mat-form-field appearance="outline"  style="width: 100%;"> 
+                                <mat-label>State</mat-label>                                
+                              <mat-select [(ngModel)]="state" formControlName="cstate">
+                                <mat-option *ngFor="let val of stateData" [value]="val.statename" [title]="val.statename" (onSelectionChange)="statechange($event,val)">
+                                  {{val.statename}}
+                                </mat-option>
+                              </mat-select>    
+                            </mat-form-field>
+                        </div> 
+                        <div class="mb-0">                                      
+                          <mat-form-field appearance="outline"  style="width: 100%;"> 
+                            <mat-label>Address</mat-label>
+                            <textarea type="text" matInput formControlName="caddress" [(ngModel)] = "address" autocomplete="off"></textarea>
+                          </mat-form-field>
+                        </div> 
+                        <div class="mb-1">            
+                            <mat-form-field appearance="outline"  style="width: 100%;"> 
+                                <mat-label>Pincode</mat-label>                       
+                            <input type="text" matInput formControlName="cpincode" [(ngModel)] = "pincode" autocomplete="off">                          
+                          </mat-form-field>
+                        </div> 
+                        <div class="mb-1">            
+                            <mat-form-field appearance="outline"  style="width: 100%;"> 
+                                <mat-label>Address</mat-label>                          
+                            <input type="text" matInput formControlName="cgstin" [(ngModel)] = "gstin" autocomplete="off">                          
+                          </mat-form-field>
+                        </div>                 
+                  </div>   
+                  <div class="col-12 col-sm-12 col-md-5 col-lg-4 col-xl-8 col-xxl-8">         
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-4">  
+                        <div *ngIf="showbank">
+                            <div class="card p-4">
+                              <div class="mb-2">     
+                                <p style="text-align: center;font-weight: 600; color: blue;">Bank Details</p> 
+                                <hr/>               
+                              </div>
+                              <div class="mb-0">                                      
+                                <mat-form-field appearance="outline"  style="width: 100%;"> 
+                                  <mat-label>Account Holder Name</mat-label>
+                                  <input type="text" matInput formControlName="caccholdername" [(ngModel)] = "accholdername" autocomplete="off">
+                                </mat-form-field>
+                              </div> 
+                              <div class="mb-1">                                      
+                                <mat-form-field appearance="outline"  style="width: 100%;"> 
+                                  <mat-label>Account No</mat-label>
+                                  <input type="text" matInput formControlName="caccno" [(ngModel)] = "accno" autocomplete="off">
+                                </mat-form-field>
+                              </div> 
+                              <div class="mb-1">                                      
+                                <mat-form-field appearance="outline"  style="width: 100%;"> 
+                                  <mat-label>IFSC Code</mat-label>
+                                  <input type="text" matInput formControlName="cifsccode" [(ngModel)] = "ifsccode" autocomplete="off">
+                                </mat-form-field>
+                              </div> 
+                              <div class="mb-1">                                      
+                                <mat-form-field appearance="outline"  style="width: 100%;"> 
+                                  <mat-label>SWIFT Code</mat-label>
+                                  <input type="text" matInput formControlName="cswiftcode" [(ngModel)] = "swiftcode" autocomplete="off">
+                                </mat-form-field>
+                              </div> 
+                              <div class="mb-1">                                      
+                                <mat-form-field appearance="outline"  style="width: 100%;"> 
+                                  <mat-label>Bank Name</mat-label>
+                                  <input type="text" matInput formControlName="cbankname" [(ngModel)] = "bankname" autocomplete="off">
+                                </mat-form-field>
+                              </div> 
+                              <div class="mb-1">                                      
+                                <mat-form-field appearance="outline"  style="width: 100%;"> 
+                                  <mat-label>Branch Name</mat-label>
+                                  <input type="text" matInput formControlName="cbranchname" [(ngModel)] = "branchname" autocomplete="off">
+                                </mat-form-field>
+                              </div> 
+                            </div>  
+                          </div>
+                    </div>
+                  </div>      
+                </div>  
+                
+                <div class="row">   
+                    <div class="col-12">
+                      <button #esave class="btn btn-success" [disabled]="loading"                  
+                      (click)="submit()" style="margin-right: 5px;">                
+                        <i class="bi bi-save" *ngIf="!loading"></i>                                             
+                        <div class="spinner-grow spinner-grow-sm" role="status" *ngIf="loading">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                        Update
+                      </button>                    
+                      <button class="btn btn-danger" (click)="clearAll()" style="margin-right: 5px;">
+                        <i class="bi bi-x-square"></i>
+                        Clear
+                      </button>      
+                      <button class="btn btn-info" (click)="goback()">
+                        <i class="bi bi-backspace"></i>
+                        Cancel & Go Back
+                      </button>      
+                    </div>   
+                    <div class="col-12">                  
+                    </div>  
+                  </div>
+    
+                
+              </form>
+        </div>
+      </div>
+    </div>
+</div>
+            

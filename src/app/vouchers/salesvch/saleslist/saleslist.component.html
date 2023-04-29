@@ -1,0 +1,127 @@
+<div class="content-wrapper " >  
+    <div class="card m-3">            
+            <div class="card-header">       
+                <div class="row">
+                  <div class="col-12 col-sm-6 col-md-8 col-lg-8 col-xl-9 col-xxl-10">
+                      <div class="header-title">List of Sales Invoice</div>      
+                  </div>  
+                  <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xxl-2">                
+                    <div style="text-align: right;">
+                      <button type="button" class="btn btn-labeled btn-info btn-sm" (click)="createNewSales()">
+                        <span class="btn-label"><i class="fa fa-plus-square" style="margin-right: 5px;"></i></span>Create Sales
+                      </button>                  
+                    </div>        
+                  </div>
+                </div>
+              </div>     
+
+<div class="card m-2 text-center p-4" *ngIf="!sdata || sdata.length==0">        
+    <div class="text-center">
+        <img src="assets/exc.png" height="64px" width="64px" />
+        <p style="font-weight: 600;">No Sales Found!</p>
+    </div>
+</div>
+<div class="card m-2" *ngFor="let i of sdata">    
+     <div class="card-body">
+
+        <div class="row m-0 p-0">
+            <div class="col-10">
+                <div>
+                    <div *ngIf="i.pending>0"><span class="pending">Pending..</span></div>
+                    <div *ngIf="i.pending==0"><span class="completed">Completed..</span></div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="d-flex flex-row-reverse">
+                    <div class="p-1">
+                        <button class="btn btn-danger btn-sm" (click)="deletesales(i)">                                
+                            <i class="bi bi-trash3-fill"></i>
+                        </button></div>
+                    <div class="p-1">
+                        <button class="btn btn-primary btn-sm" (click)="editsales(i)">
+                        <i class="bi bi-pencil-square"></i>
+                        </button></div>                  
+                </div>
+            </div>  
+        </div>
+
+            <div class="row m-0 p-0"> 
+                <div class="col-12">  
+                    <table class="table table-bordered table-responsive">
+                        <thead>
+                            <tr>
+                            <th>INVOICE NO</th>
+                            <th>INVOICE DATE</th>
+                            <th>CUSTOMER NAME</th>
+                            <th>SO NO</th>
+                            <th>SO DATE</th>                          
+                            <th>INVOCIE VALUE</th>
+                            <th>SUB TOTAL</th>                            
+                            <th>DISC VALUE</th>
+                            <th>CGST VALUE</th>       
+                            <th>SGST VALUE</th>                            
+                            <th>IGST VALUE</th>                                
+                            <th>ROUNDED OFF</th>                            
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{ i.invno }}</td>
+                            <td>{{ i.invdate }}</td>
+                            <td>{{ i.customername }}</td>
+                            <td>{{ i.sono }}</td>
+                            <td>{{ i.sodate }}</td>                        
+                            <td>{{ i.net }}</td>
+                            <td>{{ i.subTotal }}</td>
+                            <td>{{ i.discountTotal }}</td>
+                            <td>{{ i.cgstTotal }}</td>
+                            <td>{{ i.sgstTotal }}</td>   
+                            <td>{{ i.igstTotal }}</td> 
+                            <td>{{ i.roundedoff }}</td>                                                       
+                        </tr>
+                        </tbody>                    
+                    </table>                 
+                </div>                
+                <div class="col-12">
+                    <table class="table table-bordered table-responsive">
+                        <thead>
+                            <tr>
+                            <th>CODE</th>
+                            <th>NAME</th>
+                            <th>HSN</th>
+                            <th>SKU</th>
+                            <th>GODOWN</th>                          
+                            <th>RATE</th>
+                            <th>QTY</th>
+                            <th>DISC</th>
+                            <th>DISC VALUE</th>
+                            <th>TAXABLE</th>       
+                            <th>GST</th>                            
+                            <th>GST VALUE</th>    
+                            <th>TOTAL VALUE</th>                            
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let r of i.saleslistDetails">
+                            <td>{{ r.productcode }}</td>
+                            <td>{{ r.product }}</td>
+                            <td>{{ r.hsn }}</td>
+                            <td>{{ r.sku }}</td>
+                            <td>{{ r.godown }}</td>                        
+                            <td>{{ r.rate }}</td>
+                            <td>{{ r.qty }}</td>
+                            <td>{{ r.disc }}</td>
+                            <td>{{ r.discvalue }}</td>
+                            <td>{{ r.taxable }}</td>   
+                            <td>{{ r.gst }}</td> 
+                            <td>{{ r.gstvalue }}</td>   
+                            <td>{{ r.amount }}</td>                            
+                        </tr>
+                        </tbody>                    
+                    </table> 
+                </div>   
+            </div>         
+     </div>
+  </div>
+</div>
+

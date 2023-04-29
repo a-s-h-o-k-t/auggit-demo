@@ -1,0 +1,125 @@
+<div class="content-wrapper " style="height:96vh; overflow-y: scroll;">  
+    <div class="card">  
+      <div class="card-header">
+        <div class="row">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-3">
+              <div class="header-title">Create State</div>      
+          </div>  
+          <div class="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-9 col-xxl-9">          
+          </div>
+        </div>
+      </div>
+      <div class="card-body">          
+        <form [formGroup]="stateForm">
+          <div style="border: 1px solid rgb(236, 236, 236); padding:1rem">
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-3">
+              <mat-form-field class="example-full-width" appearance="outline" style="width:100%">                          
+                <mat-label>Select Country</mat-label>  
+                <mat-select formControlName="cCountry" [(ngModel)]="selectedCountry" (selectionChange)="changeCountry($event)">
+                  <mat-option *ngFor="let val of countryData" [value]="val.countryname" [title]="val.countryname">
+                    {{val.countryname}}
+                  </mat-option>
+                </mat-select>        
+                <small *ngIf="stateForm.controls['cCountry'].dirty && stateForm.hasError('required','cCountry')" class="text-danger">State Code Required!</small>      
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-3">
+              <mat-form-field class="example-full-width" appearance="outline" style="width:100%">                          
+                <mat-label>State Code</mat-label>                  
+                <input type="text" formControlName="ccode"  [(ngModel)]="code" matInput placeholder="">      
+                <small *ngIf="stateForm.controls['ccode'].dirty && stateForm.hasError('required','ccode')" class="text-danger">State Code Required!</small>
+              </mat-form-field>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-3">
+              <mat-form-field class="example-full-width" appearance="outline" style="width:100%">                          
+                <mat-label>State Name</mat-label>
+                <input type="text" formControlName="cname"  [(ngModel)] = "name" matInput placeholder="">      
+                <small *ngIf="stateForm.controls['cname'].dirty && stateForm.hasError('required','cname')" class="text-danger">State Name Required!</small>
+              </mat-form-field>
+            </div>        
+          </div>  
+          
+          <div class="row">
+            <div class="col-12">   
+
+                <button #esave class="btn btn-success" [disabled]="loading" (click)="submit()" style="margin-right: 10px;">
+                    <i class="bi bi-save" *ngIf="!loading"></i>                                             
+                    <div class="spinner-grow spinner-grow-sm" role="status" *ngIf="loading">
+                    <span class="sr-only">Loading...</span>
+                    </div>
+                Save
+                </button>       
+                <button class="btn btn-primary"  [disabled]="loading"
+                (keyup.enter)="update()" (click)="update()">
+                <i class="bi bi-save" *ngIf="!loading"></i>                                             
+                <div class="spinner-grow spinner-grow-sm" role="status" *ngIf="loading">
+                  <span class="sr-only">Loading...</span>
+                </div>
+                Update
+                </button>     
+
+                <button class="btn btn-danger"
+                (keyup.enter)="clear()"
+                (click)="clear()">
+                <i class="bi bi-x-square"></i>
+                Clear
+                </button>     
+
+            </div>   
+          </div>  
+
+        </div>    
+        </form>
+  
+        <div class="row">        
+          <div class="d-flex flex-row">
+            <div class="p-2">
+              <div style="height:20px;width: 20px; background-color: gold;"></div>
+            </div>
+            <div class="p-2">Deleted Record's</div>          
+          </div>       
+        </div>
+        <div class="row">        
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-8 col-xxl-8">
+               <!-- <div style="overflow-x: auto"> -->
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                               
+                  <ng-container matColumnDef="COUNTRY">
+                    <th mat-header-cell *matHeaderCellDef> COUNTRY </th>
+                    <td mat-cell *matCellDef="let element"> {{element.country}} </td>
+                  </ng-container>    
+                  <ng-container matColumnDef="STATE_CODE">
+                    <th mat-header-cell *matHeaderCellDef> STATE_CODE </th>
+                    <td mat-cell *matCellDef="let element"> {{element.stetecode}} </td>
+                  </ng-container>      
+                  <ng-container matColumnDef="STATE_NAME">
+                    <th mat-header-cell *matHeaderCellDef> STATE_NAME </th>
+                    <td mat-cell *matCellDef="let element"> {{element.statename}} </td>
+                  </ng-container>
+                  
+                  <ng-container matColumnDef="ACTIONS">
+                    <th mat-header-cell *matHeaderCellDef> ACTIONS </th>
+                    <td mat-cell *matCellDef="let element"> 
+                        <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary" (click)="edit(element)">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="edit">edit</mat-icon>                
+                        </button>
+                        <button *ngIf="element.rStatus == 'A'" mat-icon-button matTooltip="Click to Delete" class="iconbutton" color="primary" (click)="delete(element)">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete">delete</mat-icon>         
+                        </button>
+                        <button *ngIf="element.rStatus == 'D'" mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary" (click)="restore(element)">
+                          <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="restore">restore</mat-icon>         
+                      </button>
+                    </td>
+                    </ng-container>   
+                  
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row [ngClass]="{'make-gold': row.rStatus == 'D'}" *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>           
+          </div>
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4 col-xxl-4"></div>       
+        </div>
+      </div>
+  </div></div>

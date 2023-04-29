@@ -1,0 +1,136 @@
+<div class=" content-wrapper " style="height:96vh; overflow-y: scroll;"> 
+    <div class="card"> 
+    <div class="card-header">       
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-4">
+            <div class="header-title">Create Category</div>      
+        </div>  
+        <div class="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-9 col-xxl-9">
+          <!--<div class="text-end">
+               <button class="btn btn-primary btn-sm" (click)="gotoList()">
+                <i class="fa fa-list" style="margin-right: 5px;" aria-hidden="true"></i>
+                List</button>
+          </div>-->
+        </div>
+      </div>
+    </div>
+    <div class="card-body">         
+        <form [formGroup]="categoryForm" onkeydown="return event.key != 'Enter';">        
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-4">
+              <div class="mb-1 text-end">
+                   <span style="color: #687e96 !important; font-size: 0.8rem;">ID #{{catcode}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4">
+              <div class="mb-1">
+                <mat-form-field class="example-full-width" appearance="outline" style="width:100%">                          
+                    <mat-label>Category Name</mat-label>  
+                    <input matInput #ename type="text" (keyup.enter)="catNameEnter($event)" formControlName="ccatname"  [(ngModel)]="catname" placeholder="" >      
+                    <small *ngIf="categoryForm.controls['ccatname'].dirty && categoryForm.hasError('required','ccatname')" class="text-danger">Category Name Required!</small>
+                    <small *ngIf="categoryForm.controls['ccatname'].hasError('isCheckCategoryName')" class="text-danger">Alrady Exist!</small>              
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+              <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4">
+                <div class="mb-1">
+                    <mat-form-field class="example-full-width" appearance="outline" style="width:100%">                          
+                        <mat-label>Category Name</mat-label>  
+                    <mat-select #eunder formControlName="ccatunder" [(ngModel)] = "catundercode" [value]="catundercode" (selectionChange)="changeCategory($event)">      
+                          <mat-option *ngFor="let item of savedData;" [value]="item.catcode">{{item.catname}}</mat-option>
+                    </mat-select>                
+                    <!-- <input type="text" (keyup.enter)="catUnderEnter($event)" formControlName="ccatunder"  [(ngModel)] = "catundercode" class="form-control form-control-sm" placeholder="">       -->
+                    <small *ngIf="categoryForm.controls['ccatunder'].dirty && categoryForm.hasError('required','ccatunder')" class="text-danger">Category Under Required!</small>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>     
+
+            <div class="row">
+                <div class="col-12">   
+    
+                    <button #esave class="btn btn-success" [disabled]="loading" *ngIf="!selectedID"                    
+                    (click)="submit()" style="margin-right: 10px;">
+                        <i class="bi bi-save" *ngIf="!loading"></i>                                             
+                        <div class="spinner-grow spinner-grow-sm" role="status" *ngIf="loading">
+                        <span class="sr-only">Loading...</span>
+                        </div>
+                    Save
+                    </button>       
+    
+                    <button class="btn btn-primary" [disabled]="loading" *ngIf="selectedID"
+                    (keyup.enter)="update()" (click)="update()">
+                    <i class="bi bi-save" *ngIf="!loading"></i>                                             
+                    <div class="spinner-grow spinner-grow-sm" role="status" *ngIf="loading">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                    Update
+                    </button>     
+    
+                    <button class="btn btn-danger"
+                    (keyup.enter)="clear()"
+                    (click)="clear()">
+                    <i class="bi bi-x-square"></i>
+                    Clear
+                    </button>     
+    
+                </div>   
+              </div>        
+        </form>
+  
+        <div class="row mb-2">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4 col-xxl-4">                        
+            <mat-form-field class="example-full-width" appearance="outline" style="width:100%">   
+                <input matInput style="text-align: center;" (keyup)="applyFilter($event)" placeholder="Search columns" #input>  
+                <span matSuffix><i class="fa fa-search"></i></span>                                           
+            </mat-form-field>
+          </div>
+        </div>   
+        
+        <div class="row mb-2">            
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4 col-xxl-4">     
+               <!-- <div style="overflow-x: auto"> -->
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="width: 100%;">
+              <ng-container matColumnDef="ACTIONS">
+                <th mat-header-cell *matHeaderCellDef  style="text-align: right; color:#fff"> ACTIONS </th>
+                <td mat-cell *matCellDef="let element"  style="text-align: right;"> 
+                    <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary" (click)="edit(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button *ngIf="element.rStatus == 'A'" mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="warn" (click)="delete(element)">
+                        <mat-icon>delete</mat-icon>        
+                    </button>
+                    <button *ngIf="element.rStatus == 'D'" mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="warn" (click)="restore(element)">
+                        <mat-icon>restore</mat-icon>         
+                  </button>
+                </td>
+            </ng-container>          
+              <!--- Note that these columns can be defined in any order.
+                    The actual rendered columns are set as a property on the row definition" -->          
+              <!-- Position Column -->
+                 
+              <!-- Name Column -->
+              <ng-container matColumnDef="CATEGORY_NAME">
+                <th mat-header-cell *matHeaderCellDef style="color: #fff;"> CATEGORY_NAME </th>
+                <td mat-cell *matCellDef="let element"> {{element.catname}} </td>
+              </ng-container>          
+              <!-- Weight Column -->
+              <!-- <ng-container matColumnDef="CATEGORY_UNDER">
+                <th mat-header-cell *matHeaderCellDef> CATEGORY_UNDER </th>
+                <td mat-cell *matCellDef="let element"> {{element.catunder}} </td>
+              </ng-container>                                   -->
+              <!--  -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true" style="background-color: rgb(119, 124, 119);color: #fff;"></tr>
+              <tr mat-row [ngClass]="{'make-gold': row.rStatus == 'D'}" *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+              <!-- </div> -->
+          </div>
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-2 col-xxl-2"></div>       
+        </div>
+  
+    </div>
+  </div>`</div>

@@ -1,0 +1,10 @@
+<div *ngFor="let i of vchdata" style="width: 30rem;">
+    <div class="row p-2" style="border: 1px solid lightgray;">
+        <div class="col-8">
+            <span style="font-weight:600">{{i.vchname}}</span>
+        </div>
+        <div class="col-4">
+            <button class="btn btn-primary" style="width: 100%;" (click)="selectVoucher(i)">Select</button>
+        </div>
+    </div>
+</div>

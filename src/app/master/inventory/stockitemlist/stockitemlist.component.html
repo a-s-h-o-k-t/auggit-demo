@@ -1,0 +1,94 @@
+<div class="content-wrapper ">
+    <div class="p-2">
+      <div class="card"> 
+        <div class="card-header">       
+          <div class="row">
+            <div class="col-12 col-sm-6 col-md-8 col-lg-8 col-xl-9 col-xxl-10">
+                <div class="header-title">List of Product's</div>      
+            </div>  
+            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xxl-2">                
+              <div style="text-align: right;">
+                <button type="button" class="btn btn-labeled btn-info btn-sm" (click)="gotonew()">
+                  <span class="btn-label"><i class="fa fa-plus-square" style="margin-right: 5px;"></i></span>Add Products
+                </button>                  
+              </div>        
+            </div>
+          </div>
+        </div>
+        <div class="card-body"> 
+          
+          <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="listData">          
+              <!-- Position Column -->
+              <ng-container matColumnDef="ITEMNAME">
+                <th mat-header-cell *matHeaderCellDef> ITEM NAME </th>
+                <td mat-cell *matCellDef="let element"> {{element.itemname}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="ITEMSKU">
+                <th mat-header-cell *matHeaderCellDef> ITEM SKU </th>
+                <td mat-cell *matCellDef="let element"> {{element.itemsku}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="ITEMHSN">
+                <th mat-header-cell *matHeaderCellDef> HSN/SAC </th>
+                <td mat-cell *matCellDef="let element"> {{element.itemhsn}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="ITEMGROUP">
+                <th mat-header-cell *matHeaderCellDef> ITEM GROUP </th>
+                <td mat-cell *matCellDef="let element"> {{element.groupname}} </td>
+              </ng-container>
+                     
+              <ng-container matColumnDef="ITEMCAT">
+                <th mat-header-cell *matHeaderCellDef> ITEM CATEGORY </th>
+                <td mat-cell *matCellDef="let element"> {{element.catname}} </td>
+              </ng-container>           
+
+              <ng-container matColumnDef="ITEMUOM">
+                <th mat-header-cell *matHeaderCellDef> ITEM UOM </th>
+                <td mat-cell *matCellDef="let element"> {{element.uomname}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="GST">
+                <th mat-header-cell *matHeaderCellDef> GST </th>
+                <td mat-cell *matCellDef="let element"> {{element.gst}} </td>
+              </ng-container> 
+
+              <ng-container matColumnDef="CESS">
+                <th mat-header-cell *matHeaderCellDef> CESS </th>
+                <td mat-cell *matCellDef="let element"> {{element.vat}} </td>
+              </ng-container> 
+              
+
+              <ng-container matColumnDef="ACTIONS">
+                <th mat-header-cell *matHeaderCellDef style="text-align: right; color: #fff;"> ACTIONS </th>
+                <td mat-cell *matCellDef="let element" style="text-align: right;"> 
+                    <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary" (click)="edit(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="warn" (click)="delete(element)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <!-- <button *ngIf="element.rStatus == 'D'" color="warn" mat-icon-button matTooltip="Click to Edit" class="iconbutton" (click)="restore(element)">
+                        <mat-icon>restore</mat-icon>
+                  </button> -->
+                </td>
+            </ng-container>  
+          
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>          
+            <mat-paginator [pageSizeOptions]="[15, 25, 50 ,100]"
+                           showFirstLastButtons
+                           aria-label="Select page of periodic elements">
+            </mat-paginator> 
+          </div>
+                    
+        </div>
+      </div>
+    </div>
+</div>
+
+

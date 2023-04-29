@@ -1,0 +1,28 @@
+.heading
+{
+    font-weight: 600;
+    text-align: center;
+}
+
+.details{
+    text-align: center;
+}
+
+.outstanding{
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.mat-column-product {
+    flex: none;
+    width: 400px;
+}
+
+th{
+    background-color: #ECF2FF;
+}
+
+tfoot {
+    background-color: #e9e9e9 !important; 
+}

@@ -1,0 +1,63 @@
+<div class="content-wrapper">
+    <div class="p-2">
+      <div class="card"> 
+        <div class="card-header">       
+          <div class="row">
+            <div class="col-12 col-sm-6 col-md-8 col-lg-8 col-xl-9 col-xxl-10">
+                <div class="header-title">List of Ledgers</div>      
+            </div>  
+            <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xxl-2">                
+              <div style="text-align: right;">
+                <button type="button" class="btn btn-labeled btn-info btn-sm" (click)="gotoNew()">
+                  <span class="btn-label"><i class="fa fa-plus-square" style="margin-right: 5px;"></i></span>Add Ledger
+                </button>              
+              </div>        
+            </div>
+          </div>
+        </div>
+        <div class="card-body">     
+            <div class="row">         
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">                                
+                     <mat-form-field appearance="outline"  style="width: 100%;"> 
+                          <input type="text" matInput [(ngModel)] = "searchledger" (ngModelChange) = "search()" autocomplete="off">
+                          <span matSuffix><mat-icon>search</mat-icon></span>   
+                     </mat-form-field>                                                                                     
+                </div>                                                             
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">     
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                            <th>lEDGER CODE</th>
+                            <th>LEDGER NAME</th>
+                            <th>LEDGER UNDER</th>                          
+                            <th>EDIT</th> 
+                            <th>DELETE</th>                                                    
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let r of filteredVendorData">
+                            <!-- <div *ngIf="i.pending>0"class="ribbon ribbon-top-left"><span>Pending</span></div>
+                            <div *ngIf="i.pending==0" class="ribbonsuccess ribbonsuccess-top-left"><span>Completed</span></div> -->
+                            <td>{{ r.ledgerCode }}</td>
+                            <td>{{ r.companyDisplayName }}</td>
+                            <td>{{ r.groupName }}</td>                        
+                            <td>
+                                <button class="btn btn-primary btn-sm" (click)="editled(r)">
+                                    <i class="bi bi-pencil-square"></i>
+                                    </button>
+                            </td>  
+                            <td>
+                                <button class="btn btn-danger btn-sm" (click)="deleteled(r)">                                
+                                    <i class="bi bi-trash3-fill"></i>
+                                </button>
+                            </td>                                                   
+                        </tr>
+                        </tbody>                    
+                    </table>            
+                </div>             
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+            

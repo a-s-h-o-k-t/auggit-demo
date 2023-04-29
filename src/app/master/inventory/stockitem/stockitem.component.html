@@ -1,0 +1,198 @@
+<div class="content-wrapper">
+  <div class="p-2">
+    <div class="card"> 
+      <div class="card-header">       
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-8 col-lg-8 col-xl-9 col-xxl-10">
+              <div class="header-title">Create Stock Item</div>      
+          </div>  
+          <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xxl-2">                
+            <div style="text-align: right;">
+              <button type="button" class="btn btn-labeled btn-info btn-sm" (click)="gotoList()">
+                <span class="btn-label"><i class="fa fa-list" style="margin-right: 5px;"></i></span>List of Stock Items
+              </button>              
+            </div>        
+          </div>
+        </div>
+      </div>
+      <div class="card-body">         
+        <form [formGroup]="itemForm">
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-4">
+              <div class="mb-1 text-end">            
+                  <span style="color: #687e96 !important; font-size: 0.8rem;">ID #{{ itemcode }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-4">
+              <div class="mb-0">                          
+                <mat-form-field class="example-full-width" appearance="outline" style="width:100%">                          
+                  <mat-label>Item Name</mat-label>
+                  <input #eitemname matInput type="text" (keyup.enter)="itemNameEnter($event)" formControlName="citemname"  [(ngModel)]="itemname" placeholder="" autocomplete="off">      
+                  <small *ngIf="itemForm.controls['citemname'].dirty && itemForm.hasError('required','citemname')" class="text-danger">Item Name Required!</small>
+                  <small *ngIf="itemForm.controls['citemname'].hasError('isCheckCategoryName')" class="text-danger">Alrady Exist!</small>              
+                </mat-form-field>
+              </div>
+            </div>       
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-4">
+              <div class="mb-0">              
+                <mat-form-field class="example-full-width" appearance="outline" style="width:100%">               
+                <mat-label>Item SKU</mat-label>
+                <input #eitemsku matInput type="text" (keyup.enter)="itemNameEnter($event)" formControlName="citemsku"  [(ngModel)]="itemsku" placeholder="" autocomplete="off" >      
+                <span matSuffix><i class="fa fa-barcode"></i></span>                
+                <small *ngIf="itemForm.controls['citemsku'].dirty && itemForm.hasError('required','citemsku')" class="text-danger">Item SKU Required!</small>
+                <small *ngIf="itemForm.controls['citemsku'].hasError('isCheckCategoryName')" class="text-danger">Alrady Exist!</small>              
+                </mat-form-field>
+              </div>
+            </div>       
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-4">
+              <div class="mb-0">              
+                <mat-form-field class="example-full-width" appearance="outline" style="width:100%">               
+                <mat-label>HSN/SAC</mat-label>
+                <input #eitemhsn matInput type="text" (keyup.enter)="itemNameEnter($event)" formControlName="citemhsn" [(ngModel)]="itemhsn" placeholder="" autocomplete="off" >      
+                <!-- <span matSuffix><i class="fa fa-barcode"></i></span>                 -->
+                <small *ngIf="itemForm.controls['citemhsn'].dirty && itemForm.hasError('required','citemhsn')" class="text-danger">Item HSN/SAC Required!</small>
+                <small *ngIf="itemForm.controls['citemhsn'].hasError('isCheckCategoryName')" class="text-danger">Alrady Exist!</small>              
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-4">
+              <div class="mb-0">                                      
+                  <mat-form-field class="example-full-width" appearance="outline" style="width:100%">                             
+                    <mat-label>Item Under</mat-label>
+                    <mat-select #eunder formControlName="citemunder" [(ngModel)]="itemundercode" [value]="itemundercode" (selectionChange)="changeGroup($event)">      
+                          <mat-option *ngFor="let item of groupData;" [value]="item.groupcode">{{item.groupname}}</mat-option>
+                    </mat-select>                
+                  <!-- <input type="text" (keyup.enter)="catUnderEnter($event)" formControlName="ccatunder"  [(ngModel)] = "catundercode" class="form-control form-control-sm" placeholder="">       -->
+                  <small *ngIf="itemForm.controls['citemunder'].dirty && itemForm.hasError('required','citemunder')" class="text-danger">Category Under Required!</small>
+                  </mat-form-field>                 
+              </div>
+            </div>          
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-4">
+              <div class="mb-0">              
+                <mat-form-field class="example-full-width" appearance="outline" style="width:100%">                         
+                  <mat-label>Item Category</mat-label>
+                    <mat-select #eitemcatcode formControlName="citemcatcode" [(ngModel)]="itemcatcode" [value]="itemcatcode" (selectionChange)="changeCategory($event)">      
+                          <mat-option *ngFor="let item of categoryData;" [value]="item.catcode">{{item.catname}}</mat-option>
+                    </mat-select>                
+                  <!-- <input type="text" (keyup.enter)="catUnderEnter($event)" formControlName="ccatunder"  [(ngModel)] = "catundercode" class="form-control form-control-sm" placeholder="">       -->
+                  <small *ngIf="itemForm.controls['citemcatcode'].dirty && itemForm.hasError('required','citemcatcode')" class="text-danger">Category Under Required!</small>
+                </mat-form-field>   
+              </div>
+            </div>        
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-4">
+              <div class="mb-0">              
+                <mat-form-field class="example-full-width" appearance="outline" style="width:100%">                         
+                  <mat-label>Item UOM</mat-label>
+                    <mat-select #eitemuomcode formControlName="citemuomcode" [(ngModel)]="itemuomcode" [value]="itemuomcode" (selectionChange)="changeUOM($event)">      
+                          <mat-option *ngFor="let item of uomData;" [value]="item.uomcode">{{item.uomname}}</mat-option>
+                    </mat-select>                
+                  <!-- <input type="text" (keyup.enter)="catUnderEnter($event)" formControlName="ccatunder"  [(ngModel)] = "catundercode" class="form-control form-control-sm" placeholder="">       -->
+                  <small *ngIf="itemForm.controls['citemuomcode'].dirty && itemForm.hasError('required','citemuomcode')" class="text-danger">Category Under Required!</small>
+                </mat-form-field>
+              </div>
+            </div>        
+          </div>
+          <!-- <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-4">
+                <div class="m-2">              
+                    <mat-slide-toggle (change)="toggleGST()">
+                      <span class="toogleSwitchText">GST Applicable</span>
+                    </mat-slide-toggle>     
+                </div>
+            </div>
+          </div>      -->              
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-4">
+              <div class="mb-0">              
+                <mat-form-field class="example-full-width" appearance="outline" style="width:100%">                         
+                  <mat-label>Taxability Type</mat-label>
+                    <mat-select #etaxabletype formControlName="ctaxabletype" [(ngModel)]="taxabletype" [value]="taxabletype" (selectionChange)="changeTaxability($event)">      
+                      <mat-option value="Taxable">Taxable</mat-option>
+                      <mat-option value="Nil Rated">Nil Rated</mat-option>
+                      <mat-option value="Exempt">Exempt</mat-option>
+                      <mat-option value="Not Applicable">Not Applicable</mat-option>
+                    </mat-select>                
+                  <!-- <input type="text" (keyup.enter)="catUnderEnter($event)" formControlName="ccatunder"  [(ngModel)] = "catundercode" class="form-control form-control-sm" placeholder="">       -->
+                  <small *ngIf="itemForm.controls['ctaxabletype'].dirty && itemForm.hasError('required','ctaxabletype')" class="text-danger">Category Under Required!</small>
+                </mat-form-field>
+              </div>
+            </div>        
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-2 col-xxl-2">
+              <div class="mb-0">              
+                <mat-form-field class="example-full-width" appearance="outline" style="width:100%">                 
+                  <mat-label>GST</mat-label>
+                  <input #egst matInput type="text" (keyup.enter)="itemNameEnter($event)" formControlName="cgst" [readonly]="gstreadonly"  [(ngModel)]="gst" placeholder="" autocomplete="off">  
+                  <span matSuffix>%</span>                
+                  <small *ngIf="itemForm.controls['cgst'].dirty && itemForm.hasError('required','cgst')" class="text-danger">GST Required!</small>
+                  <small *ngIf="itemForm.controls['cgst'].hasError('isCheckCategoryName')" class="text-danger">Alrady Exist!</small>              
+                </mat-form-field>
+              </div>
+            </div>    
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-2 col-xxl-2" >
+              <div class="mb-0">              
+                <mat-form-field class="example-full-width" appearance="outline" style="width:100%">                 
+                  <mat-label>CESS</mat-label>
+                  <input #ecess matInput type="text" (keyup.enter)="itemNameEnter($event)" formControlName="ccess" [readonly]="cessreadonly"  [(ngModel)]="cess" placeholder="" autocomplete="off">
+                  <span matSuffix>%</span>                      
+                  <small *ngIf="itemForm.controls['ccess'].dirty && itemForm.hasError('required','ccess')" class="text-danger">CESS Required!</small>
+                  <small *ngIf="itemForm.controls['ccess'].hasError('isCheckCategoryName')" class="text-danger">Alrady Exist!</small>              
+                </mat-form-field>
+              </div>
+            </div>
+            <!-- <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2">
+              <div class="mb-1">
+                <label for="exampleFormControlInput1" class="form-label-sm">VAT<span style="color: red; margin-left:3px; font-weight:600">*</span></label>
+                <input #evat type="text" (keyup.enter)="itemNameEnter($event)" formControlName="cvat"  [(ngModel)] = "cess" 
+                class="form-control form-control-sm" placeholder="" >      
+                <small *ngIf="itemForm.controls['cvat'].dirty && itemForm.hasError('required','cvat')" class="text-danger">VAT Required!</small>
+                <small *ngIf="itemForm.controls['cvat'].hasError('isCheckCategoryName')" class="text-danger">Alrady Exist!</small>              
+              </div>
+            </div> -->
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-4">
+              <div class="mb-1">              
+                <mat-form-field class="example-full-width" appearance="outline" style="width:100%">             
+                  <mat-label>Type of Supply</mat-label>
+                <div class="mb-0">              
+                    <mat-select #ectypeofsupply formControlName="ctypeofsupply" [(ngModel)]="typeofsupply" [value]="typeofsupply" (selectionChange)="changeTOS($event)">      
+                          <mat-option value="Goods">Goods</mat-option>
+                          <mat-option value="Services">Services</mat-option>
+                    </mat-select>                
+                  <!-- <input type="text" (keyup.enter)="catUnderEnter($event)" formControlName="ccatunder"  [(ngModel)] = "catundercode" class="form-control form-control-sm" placeholder="">       -->
+                  <small *ngIf="itemForm.controls['ctypeofsupply'].dirty && itemForm.hasError('required','ctypeofsupply')" class="text-danger">Category Under Required!</small>
+                </div>   
+                </mat-form-field>  
+              </div>
+            </div>
+          </div>
+          <!-- [disabled]="itemForm.invalid || loading"  -->
+          <div class="row">   
+              <div class="col-12">
+                <button #esave class="btn btn-success" [disabled]="loading"           
+                (click)="submit()" style="margin-right: 5px;">                
+                  <i class="bi bi-save" *ngIf="!loading"></i>                                             
+                  <div class="spinner-grow spinner-grow-sm" role="status" *ngIf="loading">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  Save
+                </button>                    
+                <button class="btn btn-danger" (click)="clear()">
+                  <i class="bi bi-x-square"></i>
+                  Clear
+                </button>      
+              </div>   
+              <div class="col-12">                  
+              </div>  
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,379 @@
+<div class="content-wrapper">
+    <div class="card">   
+        <div class="card-header">       
+            <div class="row">
+              <div class="col-12 col-sm-6 col-md-8 col-lg-8 col-xl-9 col-xxl-10">
+                  <div class="header-title">Create Customer</div>      
+              </div>  
+              <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xxl-2">                
+                <div style="text-align: right;">
+                  <button type="button" class="btn btn-labeled btn-info btn-sm" (click)="gotoList()">
+                    <span class="btn-label"><i class="fa fa-list" style="margin-right: 5px;"></i></span>List of Customer's
+                  </button>              
+                </div>        
+              </div>
+            </div>
+          </div>
+      <div class="card-body">                
+        <!-- <div class="row mt-0 mb-2">
+          <mat-radio-group aria-label="Select an option" [(ngModel)]="type">
+            <mat-radio-button value="Business" (change)="typeChange($event)">Business</mat-radio-button>
+            <mat-radio-button style="margin-left: 10px;" value="Individual" (change)="typeChange($event)">Individual</mat-radio-button>
+          </mat-radio-group>
+        </div> -->
+        <form [formGroup]="vendorForm">   
+          <div class="row">               
+            <div class="col-12 col-sm-12 col-md-7 col-lg-8 col-xl-6 col-xxl-4">
+              <div class="mb-0">
+                <mat-form-field appearance="outline" style="width: 100%;"> 
+                  <mat-label>Customer Name</mat-label>            
+                  <input type="text" matInput formControlName="cdisplayName" [(ngModel)]="displayName" laceholder="">              
+                </mat-form-field>
+              </div>
+            </div>     
+          </div>
+          <div class="row"> 
+            <label class="ml-2"> Primary Contact Person</label>
+          </div>
+          <div class="row">                          
+            <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 col-xxl-2">                                    
+                  <mat-form-field class="example-full-width" appearance="outline" style="width: 100%;">                       
+                    <mat-label>Salutation</mat-label>
+                  <mat-select>
+                    <mat-option>Mr.</mat-option>
+                    <mat-option>Mrs.</mat-option>
+                    <mat-option>Ms.</mat-option>
+                    <mat-option>Miss.</mat-option>
+                    <mat-option>Dr.</mat-option>
+                  </mat-select>                        
+                </mat-form-field>                                   
+            </div>        
+            <div class="col-12 col-sm-12 col-md-5 col-lg-6 col-xl-4 col-xxl-4">             
+                <mat-form-field appearance="outline" style="width: 100%;"> 
+                  <mat-label>First Name</mat-label> 
+                    <input matInput type="text" formControlName="cfirstName" [(ngModel)]="firstName" placeholder="">              
+                </mat-form-field>              
+            </div>
+            <div class="col-12 col-sm-12 col-md-5 col-lg-4 col-xl-4 col-xxl-4">             
+                <mat-form-field appearance="outline" style="width: 100%;"> 
+                  <mat-label>Last Name</mat-label> 
+                  <input type="text" matInput formControlName="clastName" [(ngModel)]="lastName" placeholder="">              
+                </mat-form-field>            
+            </div>
+          </div>               
+          <div class="row mb-2">    
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-3">               
+                  <mat-form-field appearance="outline" style="width: 100%;"> 
+                    <mat-label>Mobile No</mat-label> 
+                    <input type="text" matInput formControlName="cmobile" [(ngModel)]="mobile" placeholder="">              
+                  </mat-form-field>               
+            </div>    
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-3">                
+                  <mat-form-field appearance="outline" style="width: 100%;"> 
+                    <mat-label>Email ID</mat-label> 
+                    <input type="text" matInput formControlName="cemail" [(ngModel)]="email" placeholder="">              
+                </mat-form-field>                              
+            </div>    
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-3">                
+                  <mat-form-field appearance="outline" style="width: 100%;"> 
+                    <mat-label>Website</mat-label> 
+                      <input type="text" matInput formControlName="cwebsite" [(ngModel)]="website" placeholder="">    
+                    </mat-form-field>                        
+            </div>  
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 col-xxl-3">              
+                <mat-form-field appearance="outline" style="width: 100%;"> 
+                  <mat-label>Currency</mat-label>               
+                  <mat-select [(ngModel)]="currency" formControlName="ccurrency" (selectionChange)="changeCurrency($event)">
+                    <mat-option *ngFor="let val of countryData" [value]="val.currencyname" [title]="val.currencyname">
+                      {{val.currencyname}}
+                    </mat-option>
+                  </mat-select>
+                  </mat-form-field>
+              </div>   
+          </div>            
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
+              <div class="card">
+                <mat-tab-group>
+                  <mat-tab label="GST Details" style="overflow: hidden !important;"> 
+                    <div class="p-4">
+                      <div class="row">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3">
+                          <mat-form-field appearance="outline" style="width: 100%;"> 
+                            <mat-label>Plcae of Supply</mat-label>                    
+                            <mat-select [(ngModel)]="statecode" formControlName="cstate" (selectionChange)="changeState($event)">
+                              <mat-option *ngFor="let val of stateData" [value]="val.stetecode" [title]="val.statename">
+                                {{val.statename}}
+                              </mat-option>
+                            </mat-select>
+                            </mat-form-field>
+                        </div>                 
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3">
+                          <mat-form-field appearance="outline" style="width: 100%;"> 
+                            <mat-label>Currency</mat-label>                            
+                                <mat-select [(ngModel)]="gstTreatment" formControlName="cgstTreatment" (selectionChange)="changeGstTreatment($event)">
+                                  <mat-option *ngFor="let val of regTypeData" [value]="val.value" [title]="val.text">
+                                    {{val.text}}
+                                  </mat-option>
+                                </mat-select>                                                            
+                              </mat-form-field>
+                          </div> 
+                        </div>
+                        <div class="row">
+                          <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3">                  
+                            <mat-form-field appearance="outline" style="width: 100%;"> 
+                              <mat-label>GSTIN No</mat-label>                              
+                              <input type="text" formControlName="cgstNo" [(ngModel)]="gstNo" matInput placeholder="">              
+                            </mat-form-field>
+                          </div>               
+                          <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3">
+                            <mat-form-field appearance="outline" style="width: 100%;"> 
+                              <mat-label>PAN No</mat-label>  
+                              <input type="text" formControlName="cpanNo" [(ngModel)]="panNo" matInput placeholder="">              
+                            </mat-form-field>
+                          </div>                   
+                          <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3">
+                            <mat-form-field appearance="outline" style="width: 100%;"> 
+                              <mat-label>CIN No</mat-label> 
+                                <input type="text" formControlName="ccinNo" [(ngModel)]="cinNo" matInput placeholder="">              
+                              </mat-form-field>                      
+                          </div>    
+                        </div>   
+                       </div>                                                                         
+                    </mat-tab>
+                    <mat-tab label="Payment Details" style="overflow: hidden !important;"> 
+                      <div class="p-4">  
+                        <div class="row">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3">
+                          <mat-form-field appearance="outline" style="width: 100%;"> 
+                            <mat-label>Balance to Pay</mat-label>  
+                            <input type="number" formControlName="cbalanceToPay" [(ngModel)]="balanceToPay" matInput placeholder="">              
+                          </mat-form-field>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3">                          
+                            <mat-form-field appearance="outline" style="width: 100%;"> 
+                              <mat-label>Balance To Collect</mat-label>  
+                              <input type="number" formControlName="cbalanceToColl" [(ngModel)]="balanceToColl" matInput placeholder="">              
+                            </mat-form-field>
+                        </div>   
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3">
+                          <mat-form-field appearance="outline" style="width: 100%;"> 
+                            <mat-label>Payment Term in Days</mat-label>  
+                            <input type="number" formControlName="cpaymentTerm" [(ngModel)]="paymentTerm" matInput placeholder="">              
+                          </mat-form-field>
+                        </div>              
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3">
+                          <mat-form-field appearance="outline" style="width: 100%;"> 
+                            <mat-label>Credit Limit</mat-label>  
+                              <input type="number" formControlName="ccreditLimit" [(ngModel)]="creditLimit" matInput placeholder="">              
+                          </mat-form-field>
+                      </div>
+                      <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3">
+                        <mat-form-field appearance="outline" style="width: 100%;"> 
+                          <mat-label>Bank Details</mat-label>  
+                          <textarea type="text" formControlName="cbankDetails" [(ngModel)]="bankDetails" matInput placeholder=""></textarea>              
+                        </mat-form-field>
+                      </div>
+                     </div>
+                    </div>
+                    </mat-tab>             
+                    <mat-tab label="Communication Details"  style="overflow: hidden !important;"> 
+                      <div class="row">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                          <div class="m-2">
+                            <div class="card">
+                              <div class="card-header">
+                                <p class="subHeader">Billing Address</p>
+                              </div>
+                              <div class="p-3">
+                                <div class="row">                                                                                           
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6">
+                                  <mat-form-field appearance="outline" style="width: 100%;"> 
+                                    <mat-label>Address</mat-label>  
+                                      <label for="exampleFormControlInput1" class="form-label-sm"></label>
+                                      <textarea type="text" formControlName="cbAddress" [(ngModel)]="bAddress" matInput placeholder=""></textarea>              
+                                  </mat-form-field>
+                                </div>                 
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6">
+                                  <mat-form-field appearance="outline" style="width: 100%;"> 
+                                    <mat-label>Country</mat-label>  
+                                    <mat-select [(ngModel)]="bCountry" formControlName="cbCountry">
+                                      <mat-option *ngFor="let val of countryData" [value]="val.countryname" [title]="val.countryname">
+                                        {{val.countryname}}
+                                      </mat-option>
+                                    </mat-select>                                           
+                                    </mat-form-field>
+                                </div>  
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6">                           
+                                    <mat-form-field appearance="outline" style="width: 100%;"> 
+                                      <mat-label>State</mat-label>  
+                                      <mat-select [(ngModel)]="bState" formControlName="cbState">
+                                        <mat-option *ngFor="let val of stateData" [value]="val.statename" [title]="val.statename">
+                                          {{val.statename}}
+                                        </mat-option>
+                                      </mat-select>                       
+                                    </mat-form-field>
+                                </div>                     
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6">
+                                  <mat-form-field appearance="outline" style="width: 100%;"> 
+                                    <mat-label>City</mat-label>                                 
+                                    <input type="text" formControlName="cbCity" [(ngModel)]="bCity" matInput placeholder="">              
+                                  </mat-form-field>
+                                </div>                                       
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6">
+                                  <mat-form-field appearance="outline" style="width: 100%;"> 
+                                    <mat-label>PinCode</mat-label>                                
+                                    <input type="text" formControlName="cbPincode" [(ngModel)]="bPincode" matInput placeholder="">              
+                                  </mat-form-field>
+                                </div>                                                  
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6">
+                                  <mat-form-field appearance="outline" style="width: 100%;"> 
+                                    <mat-label>Phone</mat-label>                               
+                                    <input type="text" formControlName="cbPhone" [(ngModel)]="bPhone" matInput placeholder="">              
+                                  </mat-form-field>                                                    
+                                </div>
+                                </div>     
+                              </div>                         
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-3"> 
+                          <div class="m-2">
+                            <div class="card">
+                              <div class="card-header">
+                                <p class="subHeader">Delivery Address</p>
+                              </div>
+                              <div class="p-3">
+                                <div class="row">                                 
+                                  <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">                                                       
+                                    <mat-form-field appearance="outline" style="width: 100%;"> 
+                                      <mat-label>Address</mat-label>  
+                                        <textarea type="text" formControlName="cdAddress" [(ngModel)]="dAddress" matInput placeholder=""></textarea>       
+                                    </mat-form-field>
+                                  </div>            
+                                  <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6">
+                                    <mat-form-field appearance="outline" style="width: 100%;"> 
+                                      <mat-label>Country</mat-label>                        
+                                        <mat-select [(ngModel)]="dCountry" formControlName="cdCountry" >
+                                          <mat-option *ngFor="let val of countryData" [value]="val.countryname" [title]="val.countryname">
+                                            {{val.countryname}}
+                                          </mat-option>
+                                        </mat-select>                  
+                                    </mat-form-field>
+                                  </div>    
+                                  <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6">
+                                    <mat-form-field appearance="outline" style="width: 100%;"> 
+                                      <mat-label>State</mat-label>  
+                                      <mat-select [(ngModel)]="dState" formControlName="cdState" >
+                                        <mat-option *ngFor="let val of stateData" [value]="val.statename" [title]="val.statename">
+                                          {{val.statename}}
+                                        </mat-option>
+                                      </mat-select>    
+                                    </mat-form-field>
+                                  </div>             
+                                  <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6">
+                                    <mat-form-field appearance="outline" style="width: 100%;"> 
+                                      <mat-label>City</mat-label>                                    
+                                        <input type="text"  formControlName="cdCity" [(ngModel)]="dCity" matInput placeholder="">              
+                                    </mat-form-field>
+                                  </div>                                      
+                                  <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6">
+                                    <mat-form-field appearance="outline" style="width: 100%;"> 
+                                      <mat-label>Pincode</mat-label>
+                                          <input type="text" formControlName="cdPincode" [(ngModel)]="dPincode" matInput placeholder="">              
+                                      </mat-form-field>
+                                  </div>
+                                  <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6">                              
+                                    <mat-form-field appearance="outline" style="width: 100%;"> 
+                                      <mat-label>Phone</mat-label>
+                                        <input type="text" formControlName="cdPhone" [(ngModel)]="dPhone" matInput placeholder="">              
+                                      </mat-form-field>                            
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                     </div>
+                    </mat-tab>
+                    <mat-tab label="Contact Pesrions"  style="overflow: hidden !important;"> 
+                      <div class="p-4">
+                        <div class="row">                        
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3">
+                          <mat-form-field appearance="outline" style="width: 100%;"> 
+                            <mat-label>Contact Person Name</mat-label>                           
+                            <input type="text" formControlName="ccpName" [(ngModel)]="cpName" matInput placeholder="">              
+                          </mat-form-field>
+                        </div>              
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3">
+                          <mat-form-field appearance="outline" style="width: 100%;"> 
+                            <mat-label>Phone</mat-label> 
+                            <input type="text" formControlName="ccpPhone" [(ngModel)]="cpPhone" matInput placeholder="">              
+                            </mat-form-field>
+                        </div>                  
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3">
+                          <mat-form-field appearance="outline" style="width: 100%;"> 
+                            <mat-label>Designation</mat-label>                             
+                                <input type="text" formControlName="ccpDesignation" [(ngModel)]="cpDesignation" matInput placeholder="">              
+                            </mat-form-field>
+                        </div>                  
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3">
+                          <mat-form-field appearance="outline" style="width: 100%;"> 
+                            <mat-label>Department</mat-label>  
+                            <input type="text" formControlName="ccpDepartment" [(ngModel)]="cpDepartment" matInput placeholder="">              
+                          </mat-form-field>
+                        </div>                      
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3">
+                          <mat-form-field appearance="outline" style="width: 100%;"> 
+                            <mat-label>Mobile No</mat-label>                             
+                            <input type="text" formControlName="ccpMobile" [(ngModel)]="cpMobile" matInput placeholder="">              
+                          </mat-form-field>
+                        </div>              
+                          <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3">
+                            <mat-form-field appearance="outline" style="width: 100%;"> 
+                              <mat-label>EMAIL ID</mat-label>                        
+                              <input type="text" formControlName="ccpEmail" [(ngModel)]="cpEmail" matInput placeholder="">                         
+                            </mat-form-field>
+                        </div>
+                        </div>                    
+                      </div>                        
+                    </mat-tab>
+                    <mat-tab label="Remarks" style="overflow: none !important;">    
+                      <div class="p-4">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-6 col-xxl-6 mt-3">
+                          <mat-form-field appearance="outline" style="width: 100%;"> 
+                            <mat-label>Remarks</mat-label>  
+                            <textarea type="text" formControlName="cremarks" [(ngModel)]="remarks" matInput placeholder=""></textarea>              
+                          </mat-form-field>
+                        </div>         
+                      </div>         
+                    </mat-tab>
+                </mat-tab-group>
+              </div>
+            </div> 
+          </div>   
+          <div class="row">   
+            <div class="col-12">
+              <button #esave class="btn btn-success" [disabled]="loading"                  
+              (click)="submit()" style="margin-right: 5px;">                
+                <i class="bi bi-save" *ngIf="!loading"></i>                                             
+                <div class="spinner-grow spinner-grow-sm" role="status" *ngIf="loading">
+                  <span class="sr-only">Loading...</span>
+                </div>
+                Save
+              </button>                    
+              <button class="btn btn-danger" (click)="clearAll()">
+                <i class="bi bi-x-square"></i>
+                Clear
+              </button>      
+            </div>   
+            <div class="col-12">                  
+            </div>  
+          </div>
+        </form>
+      </div>        
+  </div>
+  </div>
+    
+        
+     

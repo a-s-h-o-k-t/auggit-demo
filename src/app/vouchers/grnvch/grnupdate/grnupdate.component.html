@@ -1,0 +1,616 @@
+<div class="content-wrapper">
+    <div class="card m-3"> 
+        <div class="card-header">       
+            <div class="row">
+              <div class="col-12 col-sm-6 col-md-8 col-lg-8 col-xl-9 col-xxl-10">
+                  <div class="header-title">Goods Receipt Note (GRN) - Update</div>      
+              </div>  
+              <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 col-xxl-2">                
+                <div style="text-align: right;">
+                  <button type="button" class="btn btn-labeled btn-info btn-sm" (click)="gotoGrnList()">
+                    <span class="btn-label"><i class="fa fa-plus-square" style="margin-right: 5px;"></i></span>GRN List
+                  </button>                  
+                </div>        
+              </div>
+            </div>
+          </div>     
+      <div class="card-body m-2 p-0">                          
+        <form [formGroup]="formGRN" onkeydown="return event.key != 'Enter';">  
+          <div style="background-color: #fff;">
+            <div class="row m-0 p-0">     
+              <div class="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-xxl-2 mb-2">                    
+                  <mat-form-field appearance="outline"  style="width: 100%;"> 
+                    <mat-label>GRN No</mat-label>
+                    <input #ecess type="text" readonly="true" matInput formControlName="cinvno" [(ngModel)] = "invno" autocomplete="off">
+                  </mat-form-field>
+              </div>   
+              <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3 mb-2">                                         
+                <mat-form-field appearance="outline"  style="width: 100%;"> 
+                            <mat-label>GRN Date  (MM/DD/YYYY)</mat-label>                  
+                      <input matInput formControlName="cinvdate" [matDatepicker]="pickerInvdate" placeholder="Select" [(ngModel)]="invdate">                   
+                      <mat-datepicker-toggle matSuffix [for]="pickerInvdate"></mat-datepicker-toggle>
+                      <mat-datepicker #pickerInvdate></mat-datepicker>                         
+                    <small *ngIf="formGRN.controls['cinvdate'].dirty && formGRN.hasError('required','cinvdate')" class="text-danger">Date Required!</small>                                      
+                </mat-form-field> 
+              </div>
+              <div class="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-xxl-2 mb-2">                  
+                <mat-form-field appearance="outline"  style="width: 100%;"> 
+                    <mat-label>Purchase Oder No</mat-label>
+                  <input #ecess type="text" matInput formControlName="cpono" [(ngModel)] = "pono" autocomplete="off">
+                </mat-form-field>
+              </div>  
+              <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3 mb-2">                  
+                <mat-form-field appearance="outline"  style="width: 100%;">    
+                    <mat-label>PO Date  (MM/DD/YYYY)</mat-label>                  
+                  <input matInput formControlName="cpodate" [matDatepicker]="pickerpoDate" placeholder="Select" [(ngModel)]="podate">                   
+                  <mat-datepicker-toggle matSuffix [for]="pickerpoDate"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerpoDate></mat-datepicker>  
+                </mat-form-field>    
+                <!-- <small *ngIf="formGRN.controls['cinvdate'].dirty && formGRN.hasError('required','cinvdate')" class="text-danger">Date Required!</small>                                       -->
+              </div>  
+              <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-2 mb-2">                  
+                <mat-form-field appearance="outline"  style="width: 100%;"> 
+                    <mat-label>Voucher Type</mat-label> 
+                  <input #evchtype type="text" matInput formControlName="cvchtype" [(ngModel)] = "vchtype" readonly="true" autocomplete="off">
+                  <button class="btn btn-outline-primary btn-sm" style="margin-top:-10px" (click)="callChangeVoucherType()" matSuffix>Change</button>        
+                </mat-form-field>
+              </div>  
+              <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-2 mb-2">                  
+                <mat-form-field appearance="outline"  style="width: 100%;"> 
+                    <mat-label>Account Name</mat-label> 
+                  <!-- <input #evchaccount type="text" matInput formControlName="cvchaccount" [(ngModel)] = "vchaccount" readonly="true" autocomplete="off"> -->                
+                    <input matInput #pacc placeholder="Select Account" aria-label="Select Account" formControlName="cpacc" [formControl]="accSearch" #eacc [matAutocomplete]="accauto" [(ngModel)]= "vchaccount">
+                    <mat-autocomplete #accauto="matAutocomplete">
+                      <cdk-virtual-scroll-viewport [ngStyle]="{height: '200px'}" itemSize="25">
+                        <mat-option *ngFor="let r of filteredAccounts | async" [value]="r.ledgername" (onSelectionChange)="accountChanged($event,r)">                  
+                          <span>{{ r.ledgername }}</span>                  
+                        </mat-option>
+                      </cdk-virtual-scroll-viewport>
+                    </mat-autocomplete>                              
+                </mat-form-field>
+              </div>   
+            </div>    
+          </div>  
+  
+  
+          <div style="margin-left: 10px; margin-right: 10px;">
+            <div class="row mb-3">
+                  <div class="col-4 background">
+                    <mat-form-field appearance="outline" style="width:100%">    
+                      <mat-label>Select Vendor</mat-label>
+                      <input matInput #evendorname                    
+                            aria-label="Vendor"
+                            [ngModel]="vendorname" formControlName="cvendorname"
+                            [matAutocomplete]="auto"
+                            [formControl]="vendorSearch" />
+                          <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let i of filteredVendors | async" [value]="i.CompanyDisplayName" (onSelectionChange)="vendorChanged($event,i)">                      
+                              <span>{{i.CompanyDisplayName}}</span> |
+                              <small>{{i.BilingAddress}}</small>
+                            </mat-option>
+                          </mat-autocomplete>
+                          <button class="btn btn-outline-danger btn-sm" style="margin-top: -12px; height: 30px; width: 30px;"  (click)="changeVendor()" matSuffix>
+                            x                           
+                          </button>
+                    </mat-form-field> 
+                  </div>
+
+                  <div class="col-2 cusbox">
+                    <div class="heading">Outstanding</div>
+                    <hr class="p-0 m-0"/>
+                    <div class="outstanding mt-3">{{vendoroutstanding | currency: 'INR' }}</div>
+                  </div>
+                  <div class="col-2 cusbox">
+                    <div class="heading">GST Details</div>   
+                    <hr class="p-0 m-0"/>                         
+                    <div class="details">{{vendorgstno}}</div>
+                    <div class="details">{{vendorgstTreatment}}</div>  
+                    <div class="details">{{vendorstate}}</div>
+                  </div>
+                  <div class="col-2 cusbox">
+                    <div class="heading">Vendor Address</div>
+                    <hr class="p-0 m-0"/>
+                    <div class="details">{{vendorbilling}}</div>
+                  </div>                                                                
+                  <div class="col-2 cusbox">
+                    <div (click)="showPendingPODetails()" style="cursor:pointer">
+                      <div class="heading">Pending PO's</div>
+                      <hr class="p-0 m-0"/>  
+                      <div style="font-weight:600;font-size: 1.4rem; color:#D61355; text-align: center;">{{vendorpodatacount}}</div>                  
+                      <div style="font-size: 0.7rem;text-align: center;" class="p-0">Click to View</div>
+                    </div>
+                  </div>               
+            </div> 
+          </div>
+           
+          <div class="row m-1 p-0">     
+            <div class="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-xxl-2">                  
+                <mat-form-field appearance="outline"  style="width: 100%;">
+                  <mat-label>Supplier Bill No</mat-label>
+                  <input #ecess type="text" matInput formControlName="csubinvno" [(ngModel)] = "subinvno" autocomplete="off">
+                </mat-form-field>
+            </div>   
+            <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">                  
+                <mat-form-field appearance="outline"  style="width: 100%;"> 
+                  <mat-label>Supplier Bill Date  (MM/DD/YYYY)</mat-label>                     
+                  <input matInput formControlName="csupinvdate" [matDatepicker]="pickerSubInvDate" placeholder="Select" [(ngModel)]="subinvdate">                   
+                  <mat-datepicker-toggle matSuffix [for]="pickerSubInvDate"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerSubInvDate></mat-datepicker>  
+                </mat-form-field>    
+                <!-- <small *ngIf="formGRN.controls['cinvdate'].dirty && formGRN.hasError('required','cinvdate')" class="text-danger">Date Required!</small>                                       -->
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 col-xxl-3">                
+              <mat-form-field appearance="outline"  style="width: 100%;">                      
+                <mat-label>Exp.. Delivery Date  (MM/DD/YYYY)</mat-label>
+                <input matInput formControlName="cexpdelidate" [matDatepicker]="pickerExpDeliDate" placeholder="Select" [(ngModel)]="expdelidate">                   
+                <mat-datepicker-toggle matSuffix [for]="pickerExpDeliDate"></mat-datepicker-toggle>
+                <mat-datepicker #pickerExpDeliDate></mat-datepicker>  
+              </mat-form-field>    
+              <!-- <small *ngIf="formGRN.controls['cinvdate'].dirty && formGRN.hasError('required','cinvdate')" class="text-danger">Date Required!</small>                                       -->
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-xxl-2">            
+            <mat-form-field class="example-full-width" appearance="outline" style="width:100%">
+              <mat-label>Payment Terms</mat-label>                                     
+              <mat-select #etaxabletype formControlName="cpaymentTerm" (selectionChange)="getPayTerm($event)">      
+                <mat-option [value]="1">15 Days</mat-option>
+                <mat-option [value]="2">30 Days</mat-option>
+                <mat-option [value]="3">45 Days</mat-option>
+                <mat-option [value]="4">60 Days</mat-option>
+                <mat-option [value]="4">90 Days</mat-option>
+                <mat-option [value]="4">180 Days</mat-option>
+                <mat-option [value]="4">365 Days</mat-option>
+              </mat-select>                        
+            </mat-form-field>       
+          </div>
+          <div class="col-12 col-sm-12 col-md-6 col-lg-2 col-xl-2 col-xxl-2">              
+            <mat-form-field appearance="outline"  style="width: 100%;"> 
+              <mat-label>Reference #</mat-label>
+              <input #ecess type="text" matInput formControlName="crefno" [(ngModel)] = "refno" autocomplete="off">
+            </mat-form-field>
+          </div>  
+          </div> 
+        </form>
+               
+  
+        <div class="row" class="m-0 p-0 mt-2">
+            <div class="col-12 mt-2">
+            <table #tabledata mat-table [dataSource]="listData" class="table-bordered table-responsive">        
+              <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center;"> X </th>
+                <td mat-cell *matCellDef="let element;let i=index">                           
+                  <button class="btn btn-danger" (click)="remove(i)" style="margin-left:10px">
+                    X            
+                  </button>        
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+              
+              <ng-container matColumnDef="product" style="width:30%">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center;">PRODUCT </th>
+                <td mat-cell *matCellDef="let element;let i=index">                                                 
+                    <input #eprod matInput placeholder="Product" aria-label="Product" #inputState [matAutocomplete]="stateAutoComplete" [(ngModel)]= "element.product"
+                    (keyup.enter)="onProdKeydown($event,i)">
+                    <mat-autocomplete #stateAutoComplete="matAutocomplete">
+                      <mat-option *ngFor="let r of filterProducts(element.product)" [value]="r.itemname"  (onSelectionChange)="prodChanged($event,r,i)">                    
+                        <span>{{r.itemname}}</span> |
+                        <small>GST : {{r.gst}}</small>
+                      </mat-option>
+                    </mat-autocomplete>
+                </td>
+                <td mat-footer-cell *matFooterCellDef>
+                  <div style="text-align:left">
+                    <button class="btn btn-success btn-sm" (click)="addRow()"> + Add More Products</button>
+                    <button class="btn btn-danger btn-sm" style="margin-left: 10px;" (click)="removeAll()">x Remove All</button>            
+                  </div>
+                </td>
+              </ng-container>      
+              <!-- Name Column -->
+              <ng-container matColumnDef="sku">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center;"> SKU CODE</th>
+                <td mat-cell *matCellDef="let element;let i=index"> 
+                  <mat-form-field appearance="outline"  style="width: 100%;">
+                    <input #esku [(ngModel)]="element.sku" class="input_right" matInput (keyup.enter)="onSkuKeydown($event,i)" /> 
+                  </mat-form-field>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>       
+                        
+              <!-- Weight Column -->
+              <ng-container matColumnDef="hsn">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center;"> HSN/SAC </th>
+                <td mat-cell *matCellDef="let element;let i=index">
+                  <mat-form-field appearance="outline"  style="width: 100%;">
+                    <input #ehsn [(ngModel)]="element.hsn" class="input_right" matInput (keyup.enter)="onHsnKeydown($event,i)"/> 
+                  </mat-form-field>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+              <!-- Weight Column -->
+      
+              <ng-container matColumnDef="godown">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center;"> GODOWN </th>
+                <td mat-cell *matCellDef="let element;let i=index"> 
+                  <mat-form-field appearance="outline"  style="width: 100%;">
+                    <input #egodown [(ngModel)]="element.godown" class="input_right" matInput (keyup.enter)="ongodownKeydown($event,i)" />            
+                  </mat-form-field>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>    
+      
+              <ng-container matColumnDef="qty">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center;"> QTY</th>
+                <td mat-cell *matCellDef="let element;let i=index">                          
+                    <input #eqty matInput [(ngModel)]="element.qty" class="input_right" type="number" (keyup.enter)="onQtyKeydown($event,i)"/>                
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>  
+                    
+                <!-- Weight Column -->
+                <ng-container matColumnDef="rate">
+                  <th mat-header-cell *matHeaderCellDef style="text-align: center;"> BASIC RATE </th>
+                  <td mat-cell *matCellDef="let element;let i=index">                   
+                      <input #erate [(ngModel)]="element.rate" type="number" class="input_right" matInput (keyup.enter)="onRateKeydown($event,i)" />                  
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+      
+                <ng-container matColumnDef="transport">
+                  <th mat-header-cell *matHeaderCellDef style="text-align: center;"> TRANSPORT CHARGE </th>
+                  <td mat-cell *matCellDef="let element;let i=index"> 
+                    <input #etransport [(ngModel)]="element.transport" type="number" matInput (keyup.enter)="onTransportRateKeydown($event,i)" />
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+      
+                <ng-container matColumnDef="packing">
+                  <th mat-header-cell *matHeaderCellDef style="text-align: center;"> PACKING CHARGE </th>
+                  <td mat-cell *matCellDef="let element;let i=index"> 
+                    <input #epacking [(ngModel)]="element.packing" type="number" matInput (keyup.enter)="onPackingRateKeydown($event,i)" />
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+      
+                <ng-container matColumnDef="insurence">
+                  <th mat-header-cell *matHeaderCellDef style="text-align: center;"> INSURENCE CHARGE </th>
+                  <td mat-cell *matCellDef="let element;let i=index"> 
+                    <input #epacking [(ngModel)]="element.insurence" type="number" matInput (keyup.enter)="onInsurenceRateKeydown($event,i)" />
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+          
+                <ng-container matColumnDef="subtotal">
+                  <th mat-header-cell *matHeaderCellDef style="text-align: center;"> SUB TOTAL </th>
+                  <td mat-cell *matCellDef="let element;let i=index">                   
+                      <input #ediscvalue readonly="true" type="number" class="input_right" [(ngModel)]="element.subtotal" matInput />                  
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+  
+                <ng-container matColumnDef="disc">
+                  <th mat-header-cell *matHeaderCellDef style="text-align: center;"> DISCOUNT %</th>
+                  <td mat-cell *matCellDef="let element;let i=index">    
+                    <div class="row">
+                      <div class="col-7 col-sm-8 col-md-9 col-lg-8 col-xl-9 col-xxl-11">
+                        <input #edisc [(ngModel)]="element.disc" type="number" class="input_right" matInput (keyup.enter)="onDiscKeydown($event,i)" /> 
+                      </div>
+                      <div class="col-5 col-sm-4 col-md-3 col-lg-4 col-xl-3 col-xxl-1">
+                        %
+                      </div>
+                    </div>                                   
+                    <hr class="p-0 m-0"/>                 
+                    <div style="text-align: right;margin-right: 10px;">{{element.discvalue}}</div>
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>            
+                <ng-container matColumnDef="taxable">
+                  <th mat-header-cell *matHeaderCellDef style="text-align: center;"> TAXABLE </th>
+                  <td mat-cell *matCellDef="let element;let i=index">                   
+                      <input #ediscvalue readonly="true" type="number" class="input_right" [(ngModel)]="element.taxable" matInput />                  
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+                <ng-container matColumnDef="gst">
+                  <th mat-header-cell *matHeaderCellDef style="text-align: center;"> TAX %</th>
+                  <td mat-cell *matCellDef="let element;let i=index">      
+                    <div class="row">
+                      <div class="col-7 col-sm-8 col-md-9 col-lg-8 col-xl-9 col-xxl-11">             
+                        <input #etax [(ngModel)]="element.gst" type="number" class="input_right" matInput (keyup.enter)="onTaxKeydown($event,i)"/>  
+                      </div>  
+                      <div class="col-5 col-sm-4 col-md-3 col-lg-4 col-xl-3 col-xxl-1">
+                        %
+                      </div>
+                    </div>                                 
+                    <hr class="p-0 m-0"/>
+                    <div style="text-align: right;margin-right: 10px;">{{element.gstvalue}}</div>                  
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>                        
+              <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center;"> AMOUNT </th>
+                <td mat-cell *matCellDef="let element;let i=index">                
+                      <input #eamt readonly="true" matInput type="number" class="input_right" [(ngModel)]="element.amount"  (keyup.enter)="onAmountKeydown($event,i)" />                 
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>              
+              <ng-container matColumnDef="vendorcode" style="visibility: hidden;">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center;"> VENDOR </th>
+                <td mat-cell *matCellDef="let element;let i=index">
+                  <input #eamt readonly="true" matInput [(ngModel)]="element.vendorcode"  (keyup.enter)="onAmountKeydown($event,i)" /> 
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>              
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+            </table>
+          </div>
+        </div>
+  
+
+  
+        <div class="m-2">
+            <div class="row p-2 m-2">  
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-7">               
+                      <div *ngFor="let f of sdef">
+                          <div class="row">
+                              <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
+                                {{f.efieldname}}
+                              </div>
+                              <div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7 col-xxl-7">
+                                <input class="form-control" [(ngModel)]="f.efieldvalue" />
+                              </div>                        
+                              <div class="col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 col-xxl-1">
+    
+                              </div>
+                          </div>
+                      </div>             
+                <div class="row">
+                  <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">  
+                    <div class="subDetails m-1">Remarks :</div> 
+                    <div>
+                      <textarea class="form-control" [(ngModel)]="remarks"></textarea>
+                    </div>
+                  </div>                
+                </div>
+              </div>  
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-5 text-end">
+                <div class="row m-0 p-0 border">
+                  <div class="col-6 lblBox">
+                    <div class="m-2">
+                      <div class="lblBoxText">Sub Total</div> 
+                    </div>
+                  </div>
+                  <div class="col-6 amountFieldColor">
+                    <div style="font-size: 1.4rem; font-weight: 600;" class="m-1 input_right">{{this.subtotal | currency:'INR'}}</div>
+                  </div>                                                       
+                </div>
+                <div class="row m-0 p-0 border">
+                  <div class="col-6 lblBox">
+                    <div class="m-2">
+                      <div class="lblBoxText">Discount Total</div> 
+                    </div>
+                  </div>
+                  <div class="col-6 amountFieldColor">
+                    <div style="font-size: 1.4rem; font-weight: 600;" class="m-1 input_right">{{this.disctotal | currency:'INR'}}</div>                           
+                  </div>
+                </div>     
+                <div class="row m-0 p-0 border">
+                  <div class="col-6 lblBox">
+                    <div class="m-2">
+                      <div class="lblBoxText">Transport Charge</div> 
+                    </div>
+                  </div>
+                    <div class="col-6 amountFieldColor">
+                        <div class="row">
+                          <div class="col-6">
+                            Rate
+                            <input class="form-control input_right" [(ngModel)]="tpRate" (keyup.enter)="applyTransportRate($event)"/>
+                          </div>
+                          <div class="col-6">
+                            Value
+                            <input class="form-control input_right" [(ngModel)]="tpValue" (keyup.enter)="applyTransportValue($event)"/>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-0 p-0 border">
+                  <div class="col-6 lblBox">
+                    <div class="m-2">
+                      <div class="lblBoxText">Packing Charge</div> 
+                    </div>
+                  </div>
+                    <div class="col-6 amountFieldColor">
+                        <div class="row">
+                          <div class="col-6">
+                            Rate
+                            <input class="form-control input_right" [(ngModel)]="pkRate"  (keyup.enter)="applyPackingRate($event)"/>
+                          </div>
+                          <div class="col-6">
+                            Value
+                            <input class="form-control input_right" [(ngModel)]="pkValue" (keyup.enter)="applyPackingValue($event)"/>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-0 p-0 border">
+                    <div class="col-6 lblBox">
+                      <div class="m-2">
+                        <div class="lblBoxText">Insurance Charge</div> 
+                      </div>
+                    </div>
+                    <div class="col-6 amountFieldColor">
+                        <div class="row">
+                          <div class="col-6">
+                            Rate
+                            <input class="form-control input_right" [(ngModel)]="insRate"  (keyup.enter)="applyInsurenceRate($event)"/>
+                          </div>
+                          <div class="col-6">
+                            Value
+                            <input class="form-control input_right" [(ngModel)]="insValue" (keyup.enter)="applyInsurenceValue($event)"/>
+                          </div>
+                        </div>
+                    </div>
+                </div>                       
+                <div class="row m-0 p-0 border">
+                  <div class="col-6 lblBox">
+                    <div class="m-2">
+                      <div class="lblBoxText">CGST Total</div> 
+                    </div>
+                  </div> 
+                  <div class="col-6 amountFieldColor">
+                    <div style="font-size: 1.4rem; font-weight: 600;" class="m-1 input_right">{{this.cgsttotal | currency:'INR'}}</div>                           
+                  </div>
+                </div>  
+                <div class="row m-0 p-0 border">
+                  <div class="col-6 lblBox">
+                    <div class="m-2">
+                      <div class="lblBoxText">SGST Total</div> 
+                    </div>
+                  </div>
+                  <div class="col-6 amountFieldColor">
+                    <div style="font-size: 1.4rem; font-weight: 600;" class="m-1 input_right">{{this.sgsttotal | currency:'INR'}}</div>                           
+                  </div>
+                </div>  
+                <div class="row m-0 p-0 border">
+                  <div class="col-6 lblBox">
+                    <div class="m-2">
+                      <div class="lblBoxText">IGST Charge</div> 
+                    </div>
+                  </div>
+                  <div class="col-6 amountFieldColor">
+                    <div style="font-size: 1.4rem; font-weight: 600;" class="m-1 input_right">{{this.igsttotal | currency:'INR'}}</div>                           
+                  </div>
+                </div>  
+       
+                <div *ngIf="!showGST" (click)="showGst()">
+                  <span style="font-weight:600;padding: 10px; color: seagreen;">Show GST Breakup</span>
+                </div>
+                <div *ngIf="showGST" (click)="showGst()">
+                  <span style="font-weight:600;padding: 10px; color: crimson">Hide GST Breakup</span></div>
+                    
+                <div *ngIf="showGST" class="row m-0 p-0 border">
+                  <table #acctabledata mat-table [dataSource]="acclistData" >            
+                    <ng-container matColumnDef="acccode">
+                      <th mat-header-cell *matHeaderCellDef style="text-align: center;display: none;">LEDGER CODE </th>
+                      <td mat-cell *matCellDef="let element;let i=index"> 
+                        <input #esku [(ngModel)]="element.acccode" class="form-control" (keyup.enter)="onSkuKeydown($event,i)" /> </td>
+                      <td mat-footer-cell *matFooterCellDef>
+                        <button class="btn btn-success btn-sm" width="100%" (click)="accaddRow()"> + Add more</button>               
+                      </td>
+                    </ng-container>                    
+                    <ng-container matColumnDef="accname">
+                      <th mat-header-cell *matHeaderCellDef style="text-align: center;display: none;">LEDGER NAME</th>
+                      <td mat-cell *matCellDef="let element;let i=index">            
+                        <mat-form-field  appearance="outline" style="width: 100%; margin-top: 0px !important;border:none">                 
+                          <input #eprod matInput placeholder="Select" aria-label="Select" #inputState [matAutocomplete]="stateAutoComplete" [(ngModel)]= "element.accname">
+                          <mat-autocomplete #stateAutoComplete="matAutocomplete">
+                            <mat-option *ngFor="let r of filterDefAccounts(element.accname)" [value]="r.ledgername"  (onSelectionChange)="accChanged($event,r,i)">                    
+                              <span>{{r.ledgername}}</span> |                        
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>   
+                      </td>
+                      <td mat-footer-cell *matFooterCellDef>
+                        <div style="text-align: left;">
+                          <button class="btn btn-outline-success btn-sm" width="100%" (click)="accaddRow()"> + Add more</button> 
+                        </div>              
+                      </td>
+                    </ng-container>  
+                    <ng-container matColumnDef="accvalue">
+                      <th mat-header-cell *matHeaderCellDef style="text-align: center;display: none;">AMOUNT</th>
+                      <td mat-cell *matCellDef="let element;let i=index"> 
+                        <input #esku [(ngModel)]="element.accvalue" style="text-align: right;" class="form-control" (keyup.enter)="onAccAmountKeyup($event)" /> </td>
+                      <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>     
+                    <ng-container matColumnDef="acckey">
+                      <th mat-header-cell *matHeaderCellDef style="text-align: center;display: none;">KEY</th>
+                      <td mat-cell *matCellDef="let element;let i=index"> 
+                        <input #esku [(ngModel)]="element.acckey" class="form-control" (keyup.enter)="onSkuKeydown($event,i)" /> </td>
+                      <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>                                                            
+                    <tr mat-header-row style="display: none;" *matHeaderRowDef="accdisplayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: accdisplayedColumns;"></tr>
+                    <tr mat-footer-row style="display: none;" *matFooterRowDef="accdisplayedColumns"></tr>
+                  </table>
+                </div>  
+                           
+                <div class="row m-0 p-0 border">
+                  <div class="col-6 lblBox">
+                    <div class="m-2">
+                      <div class="lblBoxText">Total</div> 
+                    </div>
+                  </div>
+                  <div class="col-6 amountFieldColor">
+                    <div style="font-size: 1.4rem; font-weight: 600;" class="m-1  input_right">{{ nettotal | currency:'INR'}}</div> 
+                  </div>      
+                </div>
+      
+                <div class="row m-0 p-0 border">
+                  <div class="col-6 lblBox">
+                    <div class="m-2">
+                      <div class="lblBoxText">TCS Charge</div> 
+                    </div>
+                  </div>
+                  <div class="col-6 amountFieldColor">
+                      <div class="row">
+                        <div class="col-6">
+                          Rate
+                          <input class="form-control input_right" [(ngModel)]="tcsrate"  (keyup.enter)="calculateall()"/>
+                        </div>
+                        <div class="col-6">
+                          Value
+                          <input class="form-control input_right" [(ngModel)]="tcsvalue" (keyup.enter)="calculateall()"/>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+      
+              <div class="row m-0 p-0 border">
+                <div class="col-6 lblBox">
+                  <div class="m-2">
+                    <div class="lblBoxText">Rounded off</div> 
+                  </div>
+                </div>
+                <div class="col-6 amountFieldColor">
+                  <input class="form-control input_right" [(ngModel)]="roundedoff" (keyup.enter)="calculate()"  />
+                </div>                    
+              </div>
+      
+                <div class="row m-0 p-0 border">
+                  <div class="col-6 p-2">
+                    <div style="font-size: 1.4rem; font-weight: 600;" class="m-1">Closing </div> 
+                  </div>
+                  <div class="col-6 amountFieldColor">
+                    <div style="font-size: 1.4rem; font-weight: 600;" class="m-1 mt-3 input_right">{{ closingtotal | currency:'INR'}}</div> 
+                  </div>
+                </div>
+      
+            </div>
+          </div>
+                   
+          <div class="row text-center mt-4">   
+            <div class="col-12">
+              <button #esave class="btn btn-success" (click)="submit()" style="margin-right: 5px;" [disabled]="loading">                
+                <i class="bi bi-save" *ngIf="!loading"></i>                                             
+                <div class="spinner-grow spinner-grow-sm" role="status" *ngIf="loading">
+                  <span class="sr-only">Loading...</span>
+                </div>
+                Update GRN
+              </button>                    
+              <button class="btn btn-danger" (click)="clear()" style="margin-right: 5px;">
+                <i class="bi bi-x-square"></i>
+                Clear
+              </button>
+              <button class="btn btn-info" (click)="goback()" >
+                <i class="bi bi-backspace"></i>
+                Cancel & Go Back
+              </button>          
+            </div>       
+          </div>     
+                            
+          </div>
+                                        
+      </div>
+    </div>
+  </div>
+  
