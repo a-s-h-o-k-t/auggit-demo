@@ -4,8 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule} from "@angular/common/http";
-
+import { HttpClientModule } from '@angular/common/http';
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,20 +12,19 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatTableModule } from '@angular/material/table'  
+import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list'; 
+import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
-
 
 import { HeaderComponent } from './applayout/header/header.component';
 import { SidebarComponent } from './applayout/sidebar/sidebar.component';
@@ -80,6 +78,8 @@ import { SalesvtypeComponent } from './vchtype/salesvtype/salesvtype.component';
 import { ServicesaleComponent } from './vouchers/salesservicevch/servicesale/servicesale.component';
 import { ServicesalelistComponent } from './vouchers/salesservicevch/servicesalelist/servicesalelist.component';
 import { ServicesaleupdateComponent } from './vouchers/salesservicevch/servicesaleupdate/servicesaleupdate.component';
+import { SalesOrderReportComponent } from './reports/sales-order-report/sales-order-report.component';
+import { GetProductDetailsPipe } from './reports/sales-order-report/get-product-details.pipe';
 
 @NgModule({
   declarations: [
@@ -135,16 +135,38 @@ import { ServicesaleupdateComponent } from './vouchers/salesservicevch/servicesa
     SalesvtypeComponent,
     ServicesaleComponent,
     ServicesalelistComponent,
-    ServicesaleupdateComponent  
+    ServicesaleupdateComponent,
+    SalesOrderReportComponent,
+    GetProductDetailsPipe,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule,MatSlideToggleModule,MatButtonModule,MatSelectModule,MatDatepickerModule,MatNativeDateModule,MatInputModule,
-    MatFormFieldModule,MatDialogModule,MatTabsModule,MatRadioModule,MatTableModule,MatIconModule,MatAutocompleteModule,MatSidenavModule,
-    MatListModule,MatExpansionModule,MatToolbarModule,MatCheckboxModule,FormsModule,ReactiveFormsModule,HttpClientModule,MatPaginatorModule
+    BrowserAnimationsModule,
+    MatSlideToggleModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatDialogModule,
+    MatTabsModule,
+    MatRadioModule,
+    MatTableModule,
+    MatIconModule,
+    MatAutocompleteModule,
+    MatSidenavModule,
+    MatListModule,
+    MatExpansionModule,
+    MatToolbarModule,
+    MatCheckboxModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    MatPaginatorModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
