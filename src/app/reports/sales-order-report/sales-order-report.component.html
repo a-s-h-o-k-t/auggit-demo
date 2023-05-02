@@ -7,39 +7,47 @@
             <form [formGroup]="form">
               <div class="row">
                 <div
-                  class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 col-xxl-2"
+                  class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3"
                 >
-                  <mat-form-field appearance="outline">
+                  <mat-form-field appearance="outline" style="width: 100%">
                     <mat-label>Vendor Name</mat-label>
                     <mat-select formControlName="vendorName">
-                      <mat-option>Option</mat-option>
+                      <mat-option value="">Select Vendor</mat-option>
+                      <mat-option
+                        *ngFor="let item of vendorDropDownData"
+                        [value]="item.vendorcode"
+                        >{{ item.vendorname }}</mat-option
+                      >
                     </mat-select>
                   </mat-form-field>
-                  <div
-                    class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 col-xxl-2"
-                  >
-                    <mat-form-field appearance="outline">
-                      <mat-label>Enter a date range</mat-label>
-                      <mat-date-range-input [rangePicker]="picker">
-                        <input
-                          matStartDate
-                          formControlName="startDate"
-                          placeholder="Start date"
-                        />
-                        <input
-                          matEndDate
-                          formControlName="endDate"
-                          placeholder="End date"
-                        />
-                      </mat-date-range-input>
-                      <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
-                      <mat-datepicker-toggle
-                        matIconSuffix
-                        [for]="picker"
-                      ></mat-datepicker-toggle>
-                      <mat-date-range-picker #picker></mat-date-range-picker>
+                </div>
+                <div
+                  class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4"
+                >
+                  <mat-form-field appearance="outline" style="width: 100%">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                      <input
+                        matStartDate
+                        formControlName="startDate"
+                        placeholder="Start date"
+                        readonly
+                      />
+                      <input
+                        matEndDate
+                        formControlName="endDate"
+                        placeholder="End date"
+                        readonly
+                      />
+                    </mat-date-range-input>
+                    <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="picker"
+                    ></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
 
-                      <!-- <mat-error
+                    <!-- <mat-error
                       *ngIf="
                         range.controls.start.hasError('matStartDateInvalid')
                       "
@@ -49,10 +57,9 @@
                       *ngIf="range.controls.end.hasError('matEndDateInvalid')"
                       >Invalid end date</mat-error
                     > -->
-                    </mat-form-field>
+                  </mat-form-field>
 
-                    <!-- <p>Selected range: {{ range.value | json }}</p> -->
-                  </div>
+                  <!-- <p>Selected range: {{ range.value | json }}</p> -->
                 </div>
                 <div class="col-12">
                   <table class="table table-bordered">

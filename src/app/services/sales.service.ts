@@ -7,8 +7,8 @@ import { catchError, map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class SalesService {
-  //URL = "https://localhost:7037/";
-  URL = 'https://auggitapi.brositecom.com/';
+  URL = 'https://localhost:7037/';
+  // URL = 'https://auggitapi.brositecom.com/';
 
   httpOptions = {
     headers: new HttpHeaders({

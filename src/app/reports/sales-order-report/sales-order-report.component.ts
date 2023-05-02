@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SalesService } from 'src/app/services/sales.service';
 
+interface VendorDropDown {
+  vendorcode: string;
+  vendorname: string;
+}
 @Component({
   selector: 'app-sales-order-report',
   templateUrl: './sales-order-report.component.html',
@@ -9,12 +13,13 @@ import { SalesService } from 'src/app/services/sales.service';
 })
 export class SalesOrderReportComponent implements OnInit {
   salesOrderData: any[] = [];
+  vendorDropDownData: VendorDropDown[] = [];
   paginationIndex: number = 0;
   pageCount: number = 10;
   form!: FormGroup;
-  constructor(public salesapi: SalesService, fb: FormBuilder) {
-    this.form = fb.group({
-      vendorName: ['showAll', Validators.required],
+  constructor(private salesapi: SalesService, private fb: FormBuilder) {
+    this.form = this.fb.group({
+      vendorName: [''],
       endDate: [''],
       startDate: [''],
     });
@@ -33,13 +38,27 @@ export class SalesOrderReportComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loaddata();
+    this.loadData();
+    this.form?.get('vendorName')?.valueChanges.subscribe((selectedValue) => {
+      console.log('vendor changed');
+      console.log(selectedValue);
+    });
   }
 
-  loaddata() {
+  loadData() {
     this.salesapi.getPendingSOListSO().subscribe((res) => {
       console.log('SO Pending', res);
       if (res.length) {
+        const newMap = new Map();
+        res
+          .map((item: any) => {
+            return {
+              vendorname: item.vendorname,
+              vendorcode: item.vendorcode,
+            };
+          })
+          .forEach((item: VendorDropDown) => newMap.set(item.vendorcode, item));
+        this.vendorDropDownData = [...newMap.values()];
         let newArr: any[] = [];
         let rowIndex = 0;
         let rowCount = 0;
