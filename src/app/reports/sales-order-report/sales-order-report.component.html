@@ -5,13 +5,13 @@
         <mat-tab label="SO LISTS" class="p-4">
           <div class="card-body">
             <form [formGroup]="form">
-              <div class="row">
+              <div class="row pb-3">
                 <div
                   class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3"
                 >
                   <mat-form-field appearance="outline" style="width: 100%">
                     <mat-label>Vendor Name</mat-label>
-                    <mat-select formControlName="vendorName">
+                    <mat-select formControlName="vendorcode">
                       <mat-option value="">Select Vendor</mat-option>
                       <mat-option
                         *ngFor="let item of vendorDropDownData"
@@ -46,107 +46,95 @@
                       [for]="picker"
                     ></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>
-
-                    <!-- <mat-error
-                      *ngIf="
-                        range.controls.start.hasError('matStartDateInvalid')
-                      "
-                      >Invalid start date</mat-error
-                    >
-                    <mat-error
-                      *ngIf="range.controls.end.hasError('matEndDateInvalid')"
-                      >Invalid end date</mat-error
-                    > -->
                   </mat-form-field>
-
-                  <!-- <p>Selected range: {{ range.value | json }}</p> -->
-                </div>
-                <div class="col-12">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr style="text-align: center">
-                        <th scope="col">S.NO</th>
-                        <th scope="col">VENDOR NAME</th>
-                        <th scope="col">ORDER VALUE</th>
-                        <th scope="col">PRODUCT DETAILS</th>
-                        <th scope="col">SO DATE</th>
-                        <th scope="col">ORDER QTY</th>
-                        <th scope="col">RECEIVED QTY</th>
-                        <th scope="col">BACKORDER QTY</th>
-                        <th scope="col">RATE</th>
-                        <th scope="col">ORDER STATUS</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr
-                        *ngFor="
-                          let data of salesOrderData[paginationIndex];
-                          let i = index
-                        "
-                        style="text-align: center"
-                      >
-                        <td scope="row">{{ i + 1 + paginationIndex * 10 }}</td>
-                        <td scope="row">{{ data.vendorname }}</td>
-                        <td scope="col">{{ data.orderedvalue }}</td>
-                        <td scope="col">
-                          {{ data.solistDetails | getProductDetails }}
-                        </td>
-                        <td scope="col">{{ data.sodate }}</td>
-                        <td scope="col">{{ data.ordered }}</td>
-                        <td scope="col">
-                          {{ data.received }}
-                        </td>
-                        <td scope="col">
-                          {{ data.pending }}
-                        </td>
-                        <td scope="col">
-                          {{ data.net }}
-                        </td>
-                        <td scope="col">
-                          <div *ngIf="data.pending > 0">
-                            <span class="pending">Pending..</span>
-                          </div>
-                          <div *ngIf="data.pending == 0">
-                            <span class="completed">Completed..</span>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="col">
-                  <ul
-                    class="pagination justify-content-end align-items-center"
-                    style="gap: 20px"
-                  >
-                    <li
-                      class="page-item cursor-pointer"
-                      [class]="{ disabled: paginationIndex === 0 }"
-                    >
-                      <a class="page-link" (click)="onClickPrev()">Previous</a>
-                    </li>
-                    <li class="page-item">
-                      <a
-                        >Page {{ paginationIndex + 1 }} of
-                        <strong>{{ salesOrderData.length }}</strong></a
-                      >
-                    </li>
-                    <li
-                      class="page-item cursor-pointer"
-                      [class]="{
-                        disabled: paginationIndex === salesOrderData.length - 1
-                      }"
-                    >
-                      <a
-                        class="page-link cursor-pointer"
-                        (click)="onClickNext()"
-                        >Next</a
-                      >
-                    </li>
-                  </ul>
                 </div>
               </div>
             </form>
+            <div class="row">
+              <div class="col-12">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr style="text-align: center">
+                      <th scope="col">S.NO</th>
+                      <th scope="col">VENDOR NAME</th>
+                      <th scope="col">ORDER VALUE</th>
+                      <th scope="col">PRODUCT DETAILS</th>
+                      <th scope="col">SO DATE</th>
+                      <th scope="col">ORDER QTY</th>
+                      <th scope="col">RECEIVED QTY</th>
+                      <th scope="col">BACKORDER QTY</th>
+                      <th scope="col">RATE</th>
+                      <th scope="col">ORDER STATUS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let data of filteredSalesOrderData[paginationIndex];
+                        let i = index
+                      "
+                      style="text-align: center"
+                    >
+                      <td scope="row">{{ i + 1 + paginationIndex * 10 }}</td>
+                      <td scope="row">{{ data.vendorname }}</td>
+                      <td scope="col">{{ data.orderedvalue }}</td>
+                      <td scope="col">
+                        {{ data.solistDetails | getProductDetails }}
+                      </td>
+                      <td scope="col">{{ data.sodate }}</td>
+                      <td scope="col">{{ data.ordered }}</td>
+                      <td scope="col">
+                        {{ data.received }}
+                      </td>
+                      <td scope="col">
+                        {{ data.pending }}
+                      </td>
+                      <td scope="col">
+                        {{ data.net }}
+                      </td>
+                      <td scope="col">
+                        <div *ngIf="data.pending > 0">
+                          <span class="pending">Pending..</span>
+                        </div>
+                        <div *ngIf="data.pending == 0">
+                          <span class="completed">Completed..</span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-12">
+                <ul
+                  class="pagination justify-content-end align-items-center"
+                  style="gap: 20px"
+                >
+                  <li
+                    class="page-item cursor-pointer"
+                    [class]="{ disabled: paginationIndex === 0 }"
+                  >
+                    <a class="page-link" (click)="onClickPrev()">Previous</a>
+                  </li>
+                  <li class="page-item">
+                    <a
+                      >Page {{ paginationIndex + 1 }} of
+                      <strong>{{ filteredSalesOrderData.length }}</strong></a
+                    >
+                  </li>
+                  <li
+                    class="page-item cursor-pointer"
+                    [class]="{
+                      disabled:
+                        paginationIndex === filteredSalesOrderData.length - 1
+                    }"
+                  >
+                    <a class="page-link cursor-pointer" (click)="onClickNext()"
+                      >Next</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </mat-tab>
         <mat-tab label="SO GRAPH" class="p-4"> </mat-tab>

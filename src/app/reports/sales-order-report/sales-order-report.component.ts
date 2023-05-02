@@ -1,5 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AfterViewChecked,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { SalesService } from 'src/app/services/sales.service';
 
 interface VendorDropDown {
@@ -12,14 +18,16 @@ interface VendorDropDown {
   styleUrls: ['./sales-order-report.component.scss'],
 })
 export class SalesOrderReportComponent implements OnInit {
-  salesOrderData: any[] = [];
+  salesOrderData!: any[];
+  filteredSalesOrderData: any[] = [];
   vendorDropDownData: VendorDropDown[] = [];
   paginationIndex: number = 0;
   pageCount: number = 10;
   form!: FormGroup;
+
   constructor(private salesapi: SalesService, private fb: FormBuilder) {
     this.form = this.fb.group({
-      vendorName: [''],
+      vendorcode: [''],
       endDate: [''],
       startDate: [''],
     });
@@ -39,15 +47,40 @@ export class SalesOrderReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
-    this.form?.get('vendorName')?.valueChanges.subscribe((selectedValue) => {
-      console.log('vendor changed');
-      console.log(selectedValue);
+    this.form.valueChanges.subscribe((values) => {
+      this.getFilterData(values, this.salesOrderData);
     });
   }
 
+  getFilterData(formValues: any, serverData: any): void {
+    let updatedValue: any[] = serverData;
+    if (formValues.vendorcode) {
+      updatedValue = updatedValue.filter(
+        (itm) => itm.vendorcode == formValues.vendorcode
+      );
+    }
+    if (formValues.startDate && formValues.endDate) {
+    }
+    let newArr: any[] = [];
+    let rowIndex = 0;
+    let rowCount = 0;
+
+    for (let data of updatedValue) {
+      if (rowCount === this.pageCount) {
+        rowCount = 0;
+        rowIndex++;
+      }
+      if (!newArr[rowIndex]) {
+        newArr[rowIndex] = [];
+      }
+      newArr[rowIndex].push(data);
+      rowCount++;
+    }
+    this.filteredSalesOrderData = newArr;
+  }
+
   loadData() {
-    this.salesapi.getPendingSOListSO().subscribe((res) => {
-      console.log('SO Pending', res);
+    this.salesapi.getPendingSOListSO().subscribe((res: any[]) => {
       if (res.length) {
         const newMap = new Map();
         res
@@ -59,22 +92,8 @@ export class SalesOrderReportComponent implements OnInit {
           })
           .forEach((item: VendorDropDown) => newMap.set(item.vendorcode, item));
         this.vendorDropDownData = [...newMap.values()];
-        let newArr: any[] = [];
-        let rowIndex = 0;
-        let rowCount = 0;
-        for (let data of res) {
-          if (rowCount === this.pageCount) {
-            rowCount = 0;
-            rowIndex++;
-          }
-          if (!newArr[rowIndex]) {
-            newArr[rowIndex] = [];
-          }
-          newArr[rowIndex].push(data);
-          rowCount++;
-        }
-        this.salesOrderData = newArr;
-        this.paginationIndex = 0;
+        this.salesOrderData = res;
+        this.getFilterData(this.form.value, res);
       }
     });
   }
