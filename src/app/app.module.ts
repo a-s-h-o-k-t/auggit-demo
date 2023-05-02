@@ -80,6 +80,8 @@ import { ServicesalelistComponent } from './vouchers/salesservicevch/servicesale
 import { ServicesaleupdateComponent } from './vouchers/salesservicevch/servicesaleupdate/servicesaleupdate.component';
 import { SalesOrderReportComponent } from './reports/sales-order-report/sales-order-report.component';
 import { GetProductDetailsPipe } from './reports/sales-order-report/get-product-details.pipe';
+import { SalesChartComponent } from './reports/sales-order-report/sales-chart/sales-chart.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
@@ -138,6 +140,7 @@ import { GetProductDetailsPipe } from './reports/sales-order-report/get-product-
     ServicesaleupdateComponent,
     SalesOrderReportComponent,
     GetProductDetailsPipe,
+    SalesChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -165,6 +168,7 @@ import { GetProductDetailsPipe } from './reports/sales-order-report/get-product-
     ReactiveFormsModule,
     HttpClientModule,
     MatPaginatorModule,
+    NgApexchartsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

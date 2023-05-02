@@ -1,0 +1,27 @@
+<div class="card-body">
+  <form [formGroup]="form">
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
+        <mat-form-field appearance="outline" style="width: 100%">
+          <mat-label>Vendor Name</mat-label>
+          <mat-select formControlName="vendorName">
+            <mat-option value="">Select Vendor</mat-option>
+            <mat-option
+              *ngFor="let item of vendorDropDownData"
+              [value]="item.vendorCode"
+              >{{ item.vendorName }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="alert alert-info fs-5 fw-bold" role="alert">SALES SUMMARY</div>
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [labels]="chartOptions.labels"
+      [responsive]="chartOptions.responsive"
+    ></apx-chart>
+  </form>
+</div>
