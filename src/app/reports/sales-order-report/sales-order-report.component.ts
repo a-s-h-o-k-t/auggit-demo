@@ -8,7 +8,7 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SalesService } from 'src/app/services/sales.service';
 
-interface VendorDropDown {
+export interface VendorDropDown {
   vendorcode: string;
   vendorname: string;
 }
@@ -80,7 +80,7 @@ export class SalesOrderReportComponent implements OnInit {
   }
 
   loadData() {
-    this.salesapi.getPendingSOListSO().subscribe((res: any[]) => {
+    this.salesapi.getPendingSOListAll().subscribe((res: any[]) => {
       if (res.length) {
         const newMap = new Map();
         res

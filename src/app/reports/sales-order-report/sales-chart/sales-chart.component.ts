@@ -1,33 +1,56 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SalesService } from 'src/app/services/sales.service';
-
-interface VendorDropDown {
-  vendorCode: string;
-  vendorName: string;
-}
+import { VendorDropDown } from '../sales-order-report.component';
 
 @Component({
   selector: 'app-sales-chart',
   templateUrl: './sales-chart.component.html',
   styleUrls: ['./sales-chart.component.scss'],
 })
-export class SalesChartComponent implements OnInit {
+export class SalesChartComponent implements OnInit, OnChanges {
   form!: FormGroup;
-  vendorDropDownData: VendorDropDown[] = [];
+  @Input('vendor-filter') vendorDropDownData: VendorDropDown[] = [];
+  @Input('sales-orderdata') salesOrderData: any[] = [];
   public chartOptions: any;
 
   constructor(private salesApi: SalesService, private fb: FormBuilder) {
     this.form = this.fb.group({
-      vendorName: [''],
+      vendorcode: [''],
     });
+  }
+
+  ngOnInit(): void {
+    console.log(this.vendorDropDownData, 'vendor data');
+    this.form.valueChanges.subscribe((values) => {
+      this.getFilterData(values, this.salesOrderData);
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.salesOrderData, '...........sales order data');
+    this.productSaleReport();
+  }
+
+  productSaleReport() {
+    let orderSeries: any = this.salesOrderData.map((item) =>
+      Number(item.ordered)
+    );
+    let orderName: any = this.salesOrderData.map((item) => item.vendorname);
 
     this.chartOptions = {
-      series: [44, 55, 41, 17, 15],
+      series: orderSeries,
       chart: {
         width: 380,
         type: 'donut',
       },
+      labels: orderName,
       dataLabels: {
         enabled: false,
       },
@@ -55,23 +78,14 @@ export class SalesChartComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {}
-  loadData() {
-    this.salesApi.getPendingSOListSO().subscribe((res) => {
-      console.log(res, '......res');
-      if (res.length) {
-        console.log(res, '......res');
-        const newMap = new Map();
-        res
-          .map((item: any) => {
-            return {
-              vendorName: item.vendorName,
-              vendorCode: item.vendorCode,
-            };
-          })
-          .forEach((item: VendorDropDown) => newMap.set(item.vendorCode, item));
-        this.vendorDropDownData = [...newMap.values()];
-      }
-    });
+  getFilterData(formValues: any, serverData: any): void {
+    console.log(formValues, serverData, 'ddddd');
+    let updatedValue: any[] = serverData;
+    if (formValues.vendorcode) {
+      updatedValue = updatedValue.filter(
+        (itm) => itm.vendorcode == formValues.vendorcode
+      );
+      console.log(updatedValue, 'updated value');
+    }
   }
 }

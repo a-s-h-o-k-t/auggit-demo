@@ -138,7 +138,10 @@
           </div>
         </mat-tab>
         <mat-tab label="SO GRAPH" class="p-4">
-          <app-sales-chart></app-sales-chart
+          <app-sales-chart
+            [vendor-filter]="vendorDropDownData"
+            [sales-orderdata]="salesOrderData"
+          ></app-sales-chart
         ></mat-tab>
       </mat-tab-group>
     </div>
