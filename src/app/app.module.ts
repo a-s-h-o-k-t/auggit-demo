@@ -82,6 +82,7 @@ import { SalesOrderReportComponent } from './reports/sales-order-report/sales-or
 import { GetProductDetailsPipe } from './reports/sales-order-report/get-product-details.pipe';
 import { SalesChartComponent } from './reports/sales-order-report/sales-chart/sales-chart.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { TopCardsComponent } from './reports/sales-order-report/top-cards/top-cards.component';
 
 @NgModule({
   declarations: [
@@ -141,6 +142,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     SalesOrderReportComponent,
     GetProductDetailsPipe,
     SalesChartComponent,
+    TopCardsComponent,
   ],
   imports: [
     BrowserModule,

@@ -15,12 +15,20 @@
         </mat-form-field>
       </div>
     </div>
+    <app-top-cards
+      [total-order]="totalOrder"
+      [total-pending]="totalPending"
+      [confirmed-status]="confirmedStatus"
+      [order-value]="orderValue"
+    ></app-top-cards>
     <div class="alert alert-info fs-5 fw-bold" role="alert">SALES SUMMARY</div>
     <apx-chart
       [series]="chartOptions.series"
       [chart]="chartOptions.chart"
-      [labels]="chartOptions.labels"
-      [responsive]="chartOptions.responsive"
+      [xaxis]="chartOptions.xaxis"
+      [stroke]="chartOptions.stroke"
+      [tooltip]="chartOptions.tooltip"
+      [dataLabels]="chartOptions.dataLabels"
     ></apx-chart>
   </form>
 </div>

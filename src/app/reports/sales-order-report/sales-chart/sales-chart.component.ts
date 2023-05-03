@@ -6,7 +6,6 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { SalesService } from 'src/app/services/sales.service';
 import { VendorDropDown } from '../sales-order-report.component';
 
 @Component({
@@ -19,63 +18,29 @@ export class SalesChartComponent implements OnInit, OnChanges {
   @Input('vendor-filter') vendorDropDownData: VendorDropDown[] = [];
   @Input('sales-orderdata') salesOrderData: any[] = [];
   public chartOptions: any;
+  filteredData!: any[];
+  orderValue: number = 0;
+  confirmedStatus: any = 0;
+  totalPending: number = 0;
+  totalOrder: number = 0;
 
-  constructor(private salesApi: SalesService, private fb: FormBuilder) {
+  constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       vendorcode: [''],
     });
   }
 
   ngOnInit(): void {
-    console.log(this.vendorDropDownData, 'vendor data');
+    console.log(this.salesOrderData, '--------------sales order data');
     this.form.valueChanges.subscribe((values) => {
       this.getFilterData(values, this.salesOrderData);
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.salesOrderData, '...........sales order data');
-    this.productSaleReport();
-  }
-
-  productSaleReport() {
-    let orderSeries: any = this.salesOrderData.map((item) =>
-      Number(item.ordered)
-    );
-    let orderName: any = this.salesOrderData.map((item) => item.vendorname);
-
-    this.chartOptions = {
-      series: orderSeries,
-      chart: {
-        width: 380,
-        type: 'donut',
-      },
-      labels: orderName,
-      dataLabels: {
-        enabled: false,
-      },
-      fill: {
-        type: 'gradient',
-      },
-      legend: {
-        formatter: function (val: any, opts: any) {
-          return val + ' - ' + opts.w.globals.series[opts.seriesIndex];
-        },
-      },
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-      ],
-    };
+    console.log(this.salesOrderData, 'sales order data');
+    this.getProductSaleReport(this.salesOrderData);
+    console.log(this.vendorDropDownData, 'drop down data');
   }
 
   getFilterData(formValues: any, serverData: any): void {
@@ -87,5 +52,62 @@ export class SalesChartComponent implements OnInit, OnChanges {
       );
       console.log(updatedValue, 'updated value');
     }
+    this.filteredData = updatedValue;
+    console.log(this.filteredData, 'filtered data');
+  }
+
+  getProductSaleReport(data: any): void {
+    let orderSeries: any = data.map((item: any) => {
+      return { name: item.vendorname, data: [Number(item.ordered)] };
+    });
+    let orderValueTotal = data.map((item: any) => {
+      return Number(item.orderedvalue);
+    });
+    let confirmedCount = data.map((item: any) => {
+      return Number(item.received);
+    });
+    this.totalOrder = data.length;
+    this.totalPending = data.length;
+    this.orderValue = orderValueTotal.reduce(
+      (a: any, b: any) => Math.round(a + b),
+      0
+    );
+    this.confirmedStatus = confirmedCount.reduce((a: any, b: any) => a + b, 0);
+
+    console.log(orderSeries, 'order');
+
+    this.chartOptions = {
+      series: orderSeries,
+      chart: {
+        height: 350,
+        type: 'area',
+        zoom: {
+          enabled: true,
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: 'smooth',
+      },
+      xaxis: {
+        type: 'datetime',
+        categories: [
+          '2018-09-19T00:00:00.000Z',
+          '2018-09-19T01:30:00.000Z',
+          '2018-09-19T02:30:00.000Z',
+          '2018-09-19T03:30:00.000Z',
+          '2018-09-19T04:30:00.000Z',
+          '2018-09-19T05:30:00.000Z',
+          '2023-04-21T07:59:12.000Z',
+        ],
+      },
+      tooltip: {
+        x: {
+          format: 'dd/MM/yy HH:mm',
+        },
+      },
+    };
   }
 }
