@@ -12,14 +12,34 @@ export interface VendorDropDown {
   vendorcode: string;
   vendorname: string;
 }
+
+export interface SalesOrderData {
+  expdelidate: string;
+  ins: any;
+  net: string;
+  ordered: string;
+  orderedvalue: string;
+  pending: string;
+  pk: any;
+  received: string;
+  receivedvalue: string;
+  rounded: any;
+  sodate: string;
+  solistDetails: any[];
+  sono: string;
+  tcs: null;
+  tr: null;
+  vendorcode: string;
+  vendorname: string;
+}
 @Component({
   selector: 'app-sales-order-report',
   templateUrl: './sales-order-report.component.html',
   styleUrls: ['./sales-order-report.component.scss'],
 })
-export class SalesOrderReportComponent implements OnInit {
-  salesOrderData!: any[];
-  filteredSalesOrderData: any[] = [];
+class SalesOrderReportComponent implements OnInit {
+  salesOrderData!: SalesOrderData[];
+  filteredSalesOrderData: SalesOrderData[] = [];
   vendorDropDownData: VendorDropDown[] = [];
   paginationIndex: number = 0;
   pageCount: number = 10;

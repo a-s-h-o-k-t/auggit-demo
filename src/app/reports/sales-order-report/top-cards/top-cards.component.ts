@@ -21,31 +21,29 @@ export class TopCardsComponent implements OnInit, OnChanges {
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes, '................changes');
-
     this.topcards = [
       {
         bgcolor: 'success',
         icon: 'bi bi-wallet',
-        title: changes['totalOrder'].currentValue,
+        title: this.totalOrder,
         subtitle: 'Total SO list',
       },
       {
         bgcolor: 'danger',
         icon: 'bi bi-bag',
-        title: changes['totalPending'].currentValue,
+        title: this.totalPending,
         subtitle: 'Total pending invoice ',
       },
       {
         bgcolor: 'warning',
         icon: 'bi bi-basket3',
-        title: changes['confirmedStatus'].currentValue,
+        title: this.confirmedStatus,
         subtitle: 'Total confirmed status',
       },
       {
         bgcolor: 'info',
         icon: 'bi bi-coin',
-        title: changes['orderValue'].currentValue,
+        title: this.orderValue,
         subtitle: 'Total ordered value',
       },
     ];
