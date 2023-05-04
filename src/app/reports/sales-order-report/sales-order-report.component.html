@@ -56,6 +56,7 @@
                   <thead>
                     <tr style="text-align: center; color: rgb(5, 5, 74)">
                       <th scope="col">S.NO</th>
+                      <th scope="col">SALES ORDER.NO</th>
                       <th scope="col">VENDOR NAME</th>
                       <th scope="col">ORDER VALUE</th>
                       <th scope="col">PRODUCT DETAILS</th>
@@ -76,6 +77,7 @@
                       style="text-align: center"
                     >
                       <td scope="row">{{ i + 1 + paginationIndex * 10 }}</td>
+                      <td scope="row">{{ data.sono }}</td>
                       <td scope="row">{{ data.vendorname }}</td>
                       <td scope="col">{{ data.orderedvalue }}</td>
                       <td scope="col">
