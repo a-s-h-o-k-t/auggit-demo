@@ -12,6 +12,7 @@ export interface VendorDropDown {
   vendorcode: string;
   vendorname: string;
 }
+
 @Component({
   selector: 'app-sales-order-report',
   templateUrl: './sales-order-report.component.html',

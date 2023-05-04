@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { VendorDropDown } from '../sales-order-report.component';
+import { ApexChart } from 'ng-apexcharts';
 
 @Component({
   selector: 'app-sales-chart',
@@ -17,12 +18,34 @@ export class SalesChartComponent implements OnInit, OnChanges {
   form!: FormGroup;
   @Input('vendor-filter') vendorDropDownData: VendorDropDown[] = [];
   @Input('sales-orderdata') salesOrderData: any[] = [];
-  public chartOptions: any;
-  filteredData!: any[];
+  public chartOptions: any = {};
+  filteredData: any[] = [];
   orderValue: number = 0;
   confirmedStatus: number = 0;
   totalPending: number = 0;
   totalOrder: number = 0;
+  chartCategories: string[] = [
+    'Jan',
+    'Feb',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+  chartSpec: Partial<ApexChart> = {
+    fontFamily: 'Nunito Sans,sans-serif',
+    height: 350,
+    type: 'area',
+    toolbar: {
+      show: false,
+    },
+  };
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -31,141 +54,121 @@ export class SalesChartComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    console.log(this.salesOrderData, '--------------sales order data');
     this.form.valueChanges.subscribe((values) => {
-      this.getFilterData(this.salesOrderData, {}, values.vendorcode);
+      this.getFilterData(this.salesOrderData, values.vendorcode);
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.salesOrderData && this.vendorDropDownData) {
-      console.log(this.salesOrderData, 'sales order data');
+      this.getFilterData(
+        this.salesOrderData,
+        this.vendorDropDownData[0].vendorcode
+      );
     }
-    this.getFilterData(
-      this.salesOrderData,
-      {},
-      this.vendorDropDownData[0].vendorcode
-    );
-    console.log(this.vendorDropDownData, 'drop down data');
   }
 
-  getFilterData(serverData: any, formValues?: any, vendorData?: string): void {
+  getFilterData(
+    serverData: any[],
+    vendorData: string,
+    selectedYear: number = 2023
+  ): void {
     let updatedValue: any[] = serverData;
-    if (this.form.value.vendorcode === '') {
-      this.form.value.vendorcode = vendorData;
+    if (this.form.value.vendorcode === '' && vendorData) {
+      this.form.get('vendorcode')?.setValue(vendorData);
     }
     if (vendorData) {
       updatedValue = updatedValue.filter((itm) => itm.vendorcode == vendorData);
-      console.log(updatedValue, 'updated value');
     }
     this.filteredData = updatedValue;
 
-    let orderSeries: any = this.filteredData.map((item: any) => {
-      return { name: item.vendorname, data: [Number(item.ordered)] };
-    });
-
-    let orderValueTotal = this.filteredData.map((item: any) => {
-      return Number(item.orderedvalue);
-    });
-
-    let confirmedCount = this.filteredData.map((item: any) => {
-      return Number(item.received);
-    });
-
     this.totalOrder = this.filteredData.length;
-    this.totalPending = this.filteredData.length;
-    this.orderValue = orderValueTotal.reduce(
-      (a: any, b: any) => Math.round(a + b),
-      0
+    this.totalPending = this.filteredData.filter(
+      (itm) => Number(itm.pending) > 0
+    ).length;
+
+    this.orderValue = Math.round(
+      this.filteredData.reduce(
+        (prev: any, curr: any) => Number(prev) + Number(curr.orderedvalue),
+        0
+      )
     );
-    this.confirmedStatus = confirmedCount.reduce((a: any, b: any) => a + b, 0);
-    // this.chartOptions = {
-    //   series: orderSeries,
-    //   chart: {
-    //     height: 350,
-    //     type: 'area',
-    //     zoom: {
-    //       enabled: true,
-    //     },
-    //   },
-    //   dataLabels: {
-    //     enabled: false,
-    //   },
-    //   stroke: {
-    //     curve: 'smooth',
-    //   },
-    //   xaxis: {
-    //     type: 'datetime',
-    //     categories: [
-    //       '2018-09-19T00:00:00.000Z',
-    //       '2018-09-19T01:30:00.000Z',
-    //       '2018-09-19T02:30:00.000Z',
-    //       '2018-09-19T03:30:00.000Z',
-    //       '2018-09-19T04:30:00.000Z',
-    //       '2018-09-19T05:30:00.000Z',
-    //       '2023-04-21T07:59:12.000Z',
-    //     ],
-    //   },
-    //   tooltip: {
-    //     x: {
-    //       format: 'dd/MM/yy HH:mm',
-    //     },
-    //   },
-    // };
+    this.confirmedStatus = this.filteredData.filter(
+      (itm) => Number(itm.pending) === 0
+    ).length;
+
+    const productMapCons = (getMonth: number, i: any, mapData: any) => {
+      i.solistDetails.forEach((item: { pname: string; pqty: string }) => {
+        if (!mapData.has(item.pname)) {
+          let arr: number[] = Array(12).fill(0);
+          arr[getMonth] = Number(item.pqty);
+          mapData.set(item.pname, arr);
+        } else {
+          const d: number[] = mapData.get(item.pname);
+          d.splice(getMonth, 1, d[getMonth] + Number(item.pqty));
+        }
+      });
+    };
+
+    const productsMap = new Map();
+    for (let i of this.filteredData) {
+      let sodate = i.sodate;
+      let splited = sodate.split(' ')[0].split('-');
+      let time = sodate.split(' ')[1];
+      let formatedDate = splited[1] + '/' + splited[0] + '/' + splited[2];
+      let finalDateString = formatedDate + ' ' + time;
+      const getYear = new Date(finalDateString).getFullYear();
+      const getMonth = new Date(finalDateString).getMonth();
+      if (!productsMap.has(getYear)) {
+        let soldProductMap = new Map();
+        productMapCons(getMonth, i, soldProductMap);
+        productsMap.set(getYear, soldProductMap);
+      } else {
+        const oldData = productsMap.get(getYear); // month i mapData --> fn
+        productMapCons(getMonth, i, oldData);
+      }
+    }
+
+    const productSales: any[] = [];
+    productsMap.forEach((item, key) => {
+      if (key === selectedYear) {
+        item.forEach((value: number[], key: string) => {
+          productSales.push({
+            year: selectedYear,
+            productName: key,
+            salesCountOfAllMonths: value,
+          });
+        });
+      }
+    });
+
+    let seriesData: any[] = [];
+    if (productSales.length) {
+      seriesData = productSales.map((item: any) => {
+        return {
+          name: item.productName,
+          data: item.salesCountOfAllMonths,
+        };
+      });
+    }
+    console.log(productSales, '-------1111111---');
+    console.log(productsMap, this.filteredData, '-------000000000---');
+    console.log(seriesData, '--------22222222222');
+
+    this.chartOptions = {
+      companyName: this.filteredData[0].vendorname,
+      year: selectedYear,
+      series: seriesData,
+      chart: this.chartSpec,
+      dataLabels: {
+        enabled: true,
+      },
+      stroke: {
+        curve: 'smooth',
+      },
+      xaxis: {
+        categories: this.chartCategories,
+      },
+    };
   }
-
-  // getProductSaleReport(data: any): void {
-  //   let orderSeries: any = data.map((item: any) => {
-  //     return { name: item.vendorname, data: [Number(item.ordered)] };
-  //   });
-  //   let orderValueTotal = data.map((item: any) => {
-  //     return Number(item.orderedvalue);
-  //   });
-  //   let confirmedCount = data.map((item: any) => {
-  //     return Number(item.received);
-  //   });
-  //   this.totalOrder = data.length;
-  //   this.totalPending = data.length;
-  //   this.orderValue = orderValueTotal.reduce(
-  //     (a: any, b: any) => Math.round(a + b),
-  //     0
-  //   );
-  //   this.confirmedStatus = confirmedCount.reduce((a: any, b: any) => a + b, 0);
-
-  //   console.log(orderSeries, 'order');
-
-  //   this.chartOptions = {
-  //     series: orderSeries,
-  //     chart: {
-  //       height: 350,
-  //       type: 'area',
-  //       zoom: {
-  //         enabled: true,
-  //       },
-  //     },
-  //     dataLabels: {
-  //       enabled: false,
-  //     },
-  //     stroke: {
-  //       curve: 'smooth',
-  //     },
-  //     xaxis: {
-  //       type: 'datetime',
-  //       categories: [
-  //         '2018-09-19T00:00:00.000Z',
-  //         '2018-09-19T01:30:00.000Z',
-  //         '2018-09-19T02:30:00.000Z',
-  //         '2018-09-19T03:30:00.000Z',
-  //         '2018-09-19T04:30:00.000Z',
-  //         '2018-09-19T05:30:00.000Z',
-  //         '2023-04-21T07:59:12.000Z',
-  //       ],
-  //     },
-  //     tooltip: {
-  //       x: {
-  //         format: 'dd/MM/yy HH:mm',
-  //       },
-  //     },
-  //   };
-  // }
 }

@@ -5,7 +5,7 @@
         <mat-form-field appearance="outline" style="width: 100%">
           <mat-label>Vendor Name</mat-label>
           <mat-select formControlName="vendorcode">
-            <mat-option value="">Select Vendor</mat-option>
+            <!-- <mat-option value="">Select Vendor</mat-option> -->
             <mat-option
               *ngFor="let item of vendorDropDownData"
               [value]="item.vendorcode"
@@ -23,13 +23,14 @@
     [confirmed-status]="confirmedStatus"
     [order-value]="orderValue"
   ></app-top-cards>
-  <div class="alert alert-info fs-5 fw-bold" role="alert">SALES SUMMARY</div>
-  <!-- <apx-chart
-    [series]="chartOptions.series"
-    [chart]="chartOptions.chart"
-    [xaxis]="chartOptions.xaxis"
-    [stroke]="chartOptions.stroke"
-    [tooltip]="chartOptions.tooltip"
-    [dataLabels]="chartOptions.dataLabels"
-  ></apx-chart> -->
+  <div class="alert alert-info fs-5 fw-bold" role="alert">
+    SALES SUMMARY - {{ chartOptions?.companyName }}
+  </div>
+  <apx-chart
+    [series]="chartOptions['series']"
+    [chart]="chartOptions['chart']"
+    [xaxis]="chartOptions['xaxis']"
+    [stroke]="chartOptions['stroke']"
+    [dataLabels]="chartOptions['dataLabels']"
+  ></apx-chart>
 </div>
