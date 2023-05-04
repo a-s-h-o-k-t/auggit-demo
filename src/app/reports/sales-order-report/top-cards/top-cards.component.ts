@@ -21,6 +21,8 @@ export class TopCardsComponent implements OnInit, OnChanges {
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes, '................changes');
+
     this.topcards = [
       {
         bgcolor: 'success',
@@ -30,7 +32,7 @@ export class TopCardsComponent implements OnInit, OnChanges {
       },
       {
         bgcolor: 'danger',
-        icon: 'bi bi-coin',
+        icon: 'bi bi-bag',
         title: changes['totalPending'].currentValue,
         subtitle: 'Total pending invoice ',
       },
@@ -42,7 +44,7 @@ export class TopCardsComponent implements OnInit, OnChanges {
       },
       {
         bgcolor: 'info',
-        icon: 'bi bi-bag',
+        icon: 'bi bi-coin',
         title: changes['orderValue'].currentValue,
         subtitle: 'Total ordered value',
       },
