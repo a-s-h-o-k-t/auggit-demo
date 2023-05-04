@@ -61,6 +61,18 @@ export class SalesOrderReportComponent implements OnInit {
       );
     }
     if (formValues.startDate && formValues.endDate) {
+      updatedValue = updatedValue.filter((itm) => {
+        let sodate = itm.sodate;
+        let splited = sodate.split(' ')[0].split('-');
+        let time = sodate.split(' ')[1];
+        let formatedDate = splited[1] + '/' + splited[0] + '/' + splited[2];
+        let finalDateString = formatedDate + ' ' + time;
+        let dateF = new Date(finalDateString).toISOString();
+        return (
+          dateF >= new Date(formValues.startDate).toISOString() &&
+          dateF <= new Date(formValues.endDate).toISOString()
+        );
+      });
     }
     let newArr: any[] = [];
     let rowIndex = 0;
