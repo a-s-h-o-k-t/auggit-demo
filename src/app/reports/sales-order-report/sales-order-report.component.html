@@ -12,7 +12,7 @@
                   <mat-form-field appearance="outline" style="width: 100%">
                     <mat-label>Vendor Name</mat-label>
                     <mat-select formControlName="vendorcode">
-                      <mat-option value="">Select Vendor</mat-option>
+                      <mat-option value="">All Vendors</mat-option>
                       <mat-option
                         *ngFor="let item of vendorDropDownData"
                         [value]="item.vendorcode"
@@ -64,7 +64,6 @@
                       <th scope="col">ORDER QTY</th>
                       <th scope="col">RECEIVED QTY</th>
                       <th scope="col">BACKORDER QTY</th>
-                      <th scope="col">RATE</th>
                       <th scope="col">ORDER STATUS</th>
                     </tr>
                   </thead>
@@ -90,9 +89,6 @@
                       </td>
                       <td scope="col">
                         {{ data.pending }}
-                      </td>
-                      <td scope="col">
-                        {{ data.net }}
                       </td>
                       <td scope="col">
                         <div *ngIf="data.pending > 0">

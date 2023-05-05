@@ -114,11 +114,10 @@ export class SalesChartComponent implements OnInit, OnChanges {
     for (let i of this.filteredData) {
       let sodate = i.sodate;
       let splited = sodate.split(' ')[0].split('-');
-      let time = sodate.split(' ')[1];
       let formatedDate = splited[1] + '/' + splited[0] + '/' + splited[2];
-      let finalDateString = formatedDate + ' ' + time;
-      const getYear = new Date(finalDateString).getFullYear();
-      const getMonth = new Date(finalDateString).getMonth();
+      const getYear = new Date(formatedDate).getFullYear();
+      const getMonth = new Date(formatedDate).getMonth();
+
       if (!productsMap.has(getYear)) {
         let soldProductMap = new Map();
         productMapCons(getMonth, i, soldProductMap);
